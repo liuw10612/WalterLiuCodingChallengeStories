@@ -11,22 +11,19 @@ namespace NexTechCodingChallengeStories.Web.Services.CacheService
         private List<StoryTitle>? cachedStoriesOnePage = null;
         private List<int> cachedStoryAllIds = new List<int> { };
         private DateTime cacheTime=DateTime.Now.AddDays(-2);
-        private int pageNumber=-1;
-        private int pageSize = -10;
+        public static int CachePageNumber = 1;
+        public static int CachePageSize = 10;
 
         public CachedDataService()
         {
 
         }
-        public void SetCachedDataOnePage(int _pageNumber, int _pageSize, List<StoryTitle>? _cachedStories)
+        public void SetCachedDataOnePage(List<StoryTitle>? _cachedStories)
         {
             TimeSpan timeLapsed = DateTime.Now.Subtract(cacheTime); 
-            if (pageNumber != _pageNumber ||
-                pageSize != _pageSize ||
+            if (cachedStoriesOnePage == null ||
                 timeLapsed.TotalHours > 1)
             {
-                pageNumber = _pageNumber;
-                pageSize = _pageSize;
                 cacheTime = DateTime.Now;
                 cachedStoriesOnePage = _cachedStories;
             }
@@ -35,8 +32,8 @@ namespace NexTechCodingChallengeStories.Web.Services.CacheService
         public List<StoryTitle>? GetCachedStoresOnePage(int _pageNumber, int _pageSize)
         {
             TimeSpan timeLapsed = DateTime.Now.Subtract(cacheTime); // could also write `now - otherTime`
-            if (pageNumber == _pageNumber &&
-                pageSize == _pageSize &&
+            if (CachePageNumber == _pageNumber &&
+                CachePageSize == _pageSize &&
                 timeLapsed.TotalHours < 1 &&
                 cachedStoriesOnePage != null)
             {
@@ -60,6 +57,12 @@ namespace NexTechCodingChallengeStories.Web.Services.CacheService
         public List<int> GetCachedStoresAllIds()
         {
             return cachedStoryAllIds;
+        }
+        public void RemoveOneStory(int storyId)
+        {
+            int? storyToRemove = cachedStoryAllIds.SingleOrDefault(r => r == storyId);
+            if (storyToRemove != null)
+                cachedStoryAllIds.Remove(storyId);
         }
 
     }

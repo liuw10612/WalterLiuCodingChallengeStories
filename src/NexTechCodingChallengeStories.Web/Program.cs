@@ -16,8 +16,9 @@ builder.Services.AddHttpClient();
 builder.Services.AddControllersWithViews();
 // DI supporting services
 builder.Services.AddSingleton(o=> new DataService());
-builder.Services.AddSingleton(o => new StoryRepository(new DataService()));
 builder.Services.AddSingleton(o => new CachedDataService());
+builder.Services.AddSingleton(o => new StoryRepository(new DataService(), new CachedDataService()));
+
 
 var app = builder.Build();
 
