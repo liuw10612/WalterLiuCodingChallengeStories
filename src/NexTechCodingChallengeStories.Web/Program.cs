@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NextechNewsWebApp.Angular.Service;
+using NexTechCodingChallengeStories.Web.Services.CacheService;
 using NexTechCodingChallengeStories.Web.Services.DataService;
 using NexTechCodingChallengeStories.Web.Services.Repository;
 
