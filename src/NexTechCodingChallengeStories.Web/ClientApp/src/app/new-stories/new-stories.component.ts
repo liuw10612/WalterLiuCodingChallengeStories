@@ -22,7 +22,7 @@ export class NewStoriesDataComponent  {
   //public totalPages: number = 0;
   //public total: number = 1;
   page = 1;
-  maxSize = 3;
+  maxSize = 5;
   collectionSize = 450;
   perPage = 10;
   calculateTotalPages = this.collectionSize / this.perPage;
@@ -31,7 +31,8 @@ export class NewStoriesDataComponent  {
     //http.get<WeatherForecast[]>(baseUrl + 'weatherforecast/allStories').subscribe(result => {
     //  this.forecasts = result;
     //}, error => console.error(error));
-    this.loadOnePage(1);
+    this.getNewStoriesCount();
+   
   }
   //ngOnInit() {
   //  this.activateRouter.paramMap.pipe(
@@ -66,24 +67,16 @@ export class NewStoriesDataComponent  {
 
   //}
 
-  //public loadOnePageNewStories(currentPage:number) {
+  public getNewStoriesCount() {
 
-  //  this.http.get<WeatherForecast[]>(this.baseUrl + `weatherforecast/onePageStories/1/perPage/10`)
-  //    .subscribe(result => {
-  //      this.forecasts = result;
-  //      // TEST initial pages
-  //      //this.total = 445;
-  //      //var range = [];
-  //      //let offset = page > 3 ? page - 3 : 0;
-  //      //for (var i = offset * pageSize; i < this.total && range.length < 5; i += pageSize) {
-  //      //  range.push(range.length + 1 + offset);
-  //      //}
-  //      //this.pages = range;
-  //      //this.totalPages = this.total / pageSize + 1;
-  //      // TEST initial pages
-  //    }, error => console.error(error));
+    this.http.get<number>(this.baseUrl + `codechallenge/storiesCount`)
+      .subscribe(result => {
+        this.collectionSize = result;
+        this.calculateTotalPages = this.collectionSize / this.perPage;
+        this.loadOnePage(1);
+      }, error => console.error(error));
 
-  //}
+  }
   public loadOnePage(currentPage: number) {
     let headers = new HttpHeaders(
       {

@@ -13,21 +13,19 @@ namespace NexTechCodingChallengeStories.Web.Controllers
     public class StoriesController : Controller
     {
         private readonly ILogger<StoriesController> _logger;
-        private readonly DataService _dataService;
+        //private readonly DataService _dataService;
         private StoryRepository _storyRepository;
-        private CachedDataService _cachedDataService;
+        //private CachedDataService _cachedDataService;
 
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public StoriesController(ILogger<StoriesController> logger, DataService dataService, StoryRepository storyRepository, CachedDataService cachedDataService)
+        public StoriesController(ILogger<StoriesController> logger, StoryRepository storyRepository)
         {
             _logger = logger;
-            _dataService = dataService;
             _storyRepository = storyRepository;
-            _cachedDataService = cachedDataService;
         }
 
         [HttpGet]
@@ -106,32 +104,31 @@ namespace NexTechCodingChallengeStories.Web.Controllers
             [FromQuery(Name = "p")] int currentPage,
             [FromQuery(Name = "ps")] int pageSize)
         {
-            // try to used cached page 1st, set only for page 1, size= 10;
-            var cachedDataOnePage = _cachedDataService.GetCachedStoresOnePage(currentPage, pageSize);
-            if (cachedDataOnePage != null)  
-                return Ok(cachedDataOnePage); // cached data exist, use it.
-            else {  // no cached or expired
-                try
-                {
-                    List<int> cachedDataAllIds = _cachedDataService.GetCachedStoresAllIds();
-                    if (cachedDataAllIds.Count == 0)
-                    {
-                        cachedDataAllIds = await _storyRepository.GetNewStoriesAsync();
-                        _cachedDataService.SetCachedDataAllIds(cachedDataAllIds);
-                    }
-                    var stories = await _storyRepository.GetOnePageStoriesAsync(currentPage, pageSize, cachedDataAllIds);
-                    if (currentPage==1 &&  pageSize==10) // save 1st page as cache
-                        _cachedDataService.SetCachedDataOnePage(currentPage, pageSize, stories);
-                    return Ok(stories.OrderByDescending(x => x.time));
-                }
-                catch (Exception e)
-                {
-                    // log and send notifications
-                    _logger.LogError(e, "error while GetOnePage");
-                    return new ObjectResult($"Error, http error : {e.Message}") { StatusCode = 500 };
-                }
-            }  
+            try
+            {
+                var stories = await _storyRepository.GetOnePageStoriesAsync(currentPage, pageSize);
+                return Ok(stories.OrderByDescending(x => x.time));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error while OnePage");
+                return new ObjectResult($"Error, http error : {e.Message}") { StatusCode = 500 };
+            }
 
+        }
+        [HttpGet("storiesCount")]
+        public async Task<IActionResult> GetStoriesCount()
+        {
+            try
+            {
+                int storiesCount = await _storyRepository.GetStoriesCountAsync();
+                return Ok(storiesCount);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error while OnePage");
+                return new ObjectResult($"Error, http error : {e.Message}") { StatusCode = 500 };
+            }
 
         }
     }
