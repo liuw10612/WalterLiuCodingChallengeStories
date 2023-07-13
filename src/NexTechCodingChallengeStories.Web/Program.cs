@@ -20,7 +20,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton(o=> new DataService());
 builder.Services.AddSingleton(o => new CachedDataService());
 //builder.Services.AddSingleton(o => new StoryRepository(builder.GetRequiredService<ILogger<StoryRepository>>(), new DataService(), new CachedDataService()));
-builder.Services.AddTransient<StoryRepository>(provider =>
+builder.Services.AddSingleton<StoryRepository>(provider =>
 {
     return new StoryRepository(provider.GetRequiredService<ILogger<StoryRepository>>(), new DataService(), new CachedDataService());
 });
