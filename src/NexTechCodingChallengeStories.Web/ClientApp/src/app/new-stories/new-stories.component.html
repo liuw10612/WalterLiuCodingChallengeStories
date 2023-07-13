@@ -14,7 +14,7 @@
       <div class="row border-top mt-1 py-1 width-cheat small">
         <nav class="col-5 col-md-3 mt-2">
           <div ngbDropdown class="d-inline-block" [autoClose]="'inside'">
-            <button class="btn btn-primary  btn-xs mr-1" id="dropdownBasic1" ngbDropdownToggle>Size per page</button>
+            <button class="btn btn-primary  btn-xs mr-1" id="dropdownBasic1" ngbDropdownToggle>Page Size</button>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
               <button ngbDropdownItem (click)="onPageSizeChange(10)">10</button>
               <button ngbDropdownItem (click)="onPageSizeChange(20)">20</button>
@@ -32,21 +32,21 @@
           </ngb-pagination>
         </nav>
 
-        <nav class="col-5 col-md-2 mt-2 ">
+        <nav class="col-5 col-md-1 mt-2 ">
           <button class="btn btn-default" style="width:100%" [disabled]="loading">
-            <fa-icon *ngIf="loading" icon="spinner" [spin]="true" size="2x"></fa-icon>&nbsp;
+            <fa-icon *ngIf="loading" icon="spinner" [spin]="true" size="2x"></fa-icon> 
           </button>
         </nav>
 
-        <nav class="col-5 col-md-4 mt-2 ">
+        <nav class="col-5 col-md-5 mt-2 ">
           <div class="form-group" style="text-align: right">
             <div class="input-group">
               <input type="text" [(ngModel)]="searchText" class="form-control" placeholder="Search" />
 
               <span class="input-group-btn">
-                <button class="btn btn-default" type="submit">
+                <button class="btn btn-outline-info"  (click)="fullSearch()">
                   <fa-icon icon="search"></fa-icon>
-                  Search
+                  Full Search
                 </button>
               </span>
             </div>

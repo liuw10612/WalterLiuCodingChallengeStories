@@ -66,7 +66,26 @@ export class NewStoriesDataComponent  {
     };
   }
 
-  }
+  public fullSearch() {
+    console.log( "fullSearch()" );
+    if (confirm('Are you sure to do a full search, it may take a while?')) {
+      if (this.searchText.length > 0) {
+        this.perPage = 100; // make size big enough for holding all the full searchs
+        this.page = 1;
+        this.loading = true;
+        this.http.get<StroyTitle[]>(`${this.baseUrl}codechallenge/onePageFullSearch?s=${this.searchText}`)
+          .subscribe(result => {
+            this.loading = false;
+            this.stories = result;
+          }, error => {
+            this.loading = false;
+            console.error(error);
+          });
+      }
+    }
+ }
+
+ }
 
 interface StroyTitle {
   id: string;

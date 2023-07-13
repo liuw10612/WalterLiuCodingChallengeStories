@@ -13,5 +13,6 @@ namespace NexTechCodingChallengeStories.Web.Services.CacheService
         void SetCachedDataAllIds(List<int> _cachedStoriesAllIds);
         List<int> GetCachedStoresAllIds();
         void RemoveOneStory(int storyId);
+        public bool NotBadUrlId(int storyId);
     }
 }
