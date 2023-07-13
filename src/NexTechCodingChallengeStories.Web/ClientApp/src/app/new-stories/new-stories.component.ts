@@ -53,9 +53,17 @@ export class NewStoriesDataComponent  {
   }
   public onPageChange(event: Event) {
     const currentPage = event;
-    console.log(currentPage + "- real page =" + this.page);
-    //this.loadOnePageNewStories(+currentPage);
-    this.loadOnePage(+currentPage);
+    if (+currentPage != this.page) {
+      console.log(currentPage + "- real page =" + this.page);
+      this.loadOnePage(+currentPage);
+    }
+  }
+
+  public onPageSizeChange(pageSize: number) {
+    if (this.perPage != pageSize) {
+      this.perPage = pageSize;
+      this.loadOnePage(this.page);
+    };
   }
 
   }
