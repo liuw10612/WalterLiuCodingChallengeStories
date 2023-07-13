@@ -24,13 +24,13 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Controller
         {
             // Arrange
             var mockLogger = new Mock<ILogger<StoriesController>>();
-            var mockStoryRepository = new Mock<IStoryRepository>();
+            var storyRepository = new StoryRepository();
 
-            mockStoryRepository
-                .Setup(Service => Service.GetOnePageStoriesAsync(1, 10))
-                .ReturnsAsync(new List<StoryTitle>());
+            //mockStoryRepository
+            //    .Setup(Service => Service.GetOnePageStoriesAsync(1, 10))
+            //    .ReturnsAsync(new List<StoryTitle>());
 
-            var sut = new StoriesController(mockLogger.Object, mockStoryRepository.Object);
+            var sut = new StoriesController(mockLogger.Object, storyRepository);
 
             // Act
             var result = await sut.OnePage(1, 10);

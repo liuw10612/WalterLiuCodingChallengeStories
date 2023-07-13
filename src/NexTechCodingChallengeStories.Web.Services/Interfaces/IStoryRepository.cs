@@ -7,11 +7,11 @@ using System.Text;
 
 namespace NexTechCodingChallengeStories.Web.Services.Interfaces
 {
-    public interface IStoryRepository : IAsyncRepository<Story>
+    public interface IStoryRepository 
     {
-        //Task<Story> GetByIdAsync(int id);
+        Task<Story> GetByIdAsync(int id);
 
-        // Task<List<int>> GetNewStoriesAsync();
+        Task<List<int>> GetNewStoriesAsync();
         Task<List<StoryTitle>> GetOnePageStoriesAsync(int page, int pageSize);
         Task<int> GetStoriesCountAsync();
     }

@@ -18,6 +18,10 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
         private IDataService _dataService;
         private ICachedData _cachedDataService;
 
+        public StoryRepository()
+        {
+
+        }
         public StoryRepository(ILogger<StoryRepository> logger, IDataService dataService, ICachedData cachedDataService)
         {
             _logger= logger;

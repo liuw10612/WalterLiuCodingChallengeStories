@@ -17,7 +17,7 @@ namespace NexTechCodingChallengeStories.Web.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public StoriesController(ILogger<StoriesController> logger, IStoryRepository storyRepository)
+        public StoriesController(ILogger<StoriesController> logger, StoryRepository storyRepository)
         {
             _logger = logger;
             _storyRepository = storyRepository;
