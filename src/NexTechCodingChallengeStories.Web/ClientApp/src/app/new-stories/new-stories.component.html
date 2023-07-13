@@ -2,9 +2,8 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-<p *ngIf="!forecasts"><em>Loading...</em></p>
+<p *ngIf="!stories"><em>Loading...</em></p>
 
-<form [formGroup]="searchForm">
 
   <hr class="my-5">
   <article>
@@ -36,7 +35,7 @@
   </article>
 
 
-  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="forecasts">
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stories">
     <thead>
       <tr>
         <th>ID</th>
@@ -46,15 +45,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let forecast of forecasts">
-        <td>{{ forecast.id }}</td>
-        <td>{{ forecast.time }}</td>
+      <tr *ngFor="let story of stories">
+        <td>{{ story.id }}</td>
+        <td>{{ story.time }}</td>
         <td>
-          <a href="{{forecast.url}}"> {{ forecast.title }} </a>
+          <a href="{{story.url}}"> {{ story.title }} </a>
         </td>
-        <td>{{ forecast.url }}</td>
+        <td>{{ story.url }}</td>
       </tr>
     </tbody>
   </table>
 
-</form>
+
