@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NexTechCodingChallengeStories.Web.Services.DataService;
 using NexTechCodingChallengeStories.Web.Services.Repository;
 using NexTechCodingChallengeStories.Web.Services.Entities;
-using NexTechCodingChallengeStories.Web.Services.CacheService;
-using System.Collections.Generic;
 using NexTechCodingChallengeStories.Web.Services.Interfaces;
 
 namespace NexTechCodingChallengeStories.Web.Controllers
@@ -13,16 +10,14 @@ namespace NexTechCodingChallengeStories.Web.Controllers
     public class StoriesController : Controller
     {
         private readonly ILogger<StoriesController> _logger;
-        //private readonly DataService _dataService;
-        private StoryRepository _storyRepository;
-        //private CachedDataService _cachedDataService;
+        private IStoryRepository _storyRepository;
 
         private static readonly string[] Summaries = new[]
         {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public StoriesController(ILogger<StoriesController> logger, StoryRepository storyRepository)
+        public StoriesController(ILogger<StoriesController> logger, IStoryRepository storyRepository)
         {
             _logger = logger;
             _storyRepository = storyRepository;
@@ -107,12 +102,15 @@ namespace NexTechCodingChallengeStories.Web.Controllers
             try
             {
                 var stories = await _storyRepository.GetOnePageStoriesAsync(currentPage, pageSize);
-                return Ok(stories.OrderByDescending(x => x.time));
+                if (stories.Count>0)
+                    return Ok(stories.OrderByDescending(x => x.time));
+                else
+                    return NotFound();
             }
             catch (Exception e)
             {
                 _logger.LogError(e, "Error while OnePage");
-                return new ObjectResult($"Error, http error : {e.Message}") { StatusCode = 500 };
+                return  NotFound();
             }
 
         }

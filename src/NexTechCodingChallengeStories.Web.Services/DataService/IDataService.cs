@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NexTechCodingChallengeStories.Web.Services.DataService
+namespace NexTechCodingChallengeStories.Web.Services.DataServices
 {
     public interface IDataService
     {

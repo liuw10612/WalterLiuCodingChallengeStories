@@ -8,8 +8,10 @@ namespace NexTechCodingChallengeStories.Web.Services.CacheService
 {
     public interface ICachedData
     {
-        Dictionary<int, Story> cachedData { get; set; }
-
-        Dictionary<int, Story> cachedShowingData { get; set; }
+        void SetCachedDataOnePage(List<StoryTitle>? _cachedStories);
+        List<StoryTitle>? GetCachedStoresOnePage(int _pageNumber, int _pageSize);
+        void SetCachedDataAllIds(List<int> _cachedStoriesAllIds);
+        List<int> GetCachedStoresAllIds();
+        void RemoveOneStory(int storyId);
     }
 }

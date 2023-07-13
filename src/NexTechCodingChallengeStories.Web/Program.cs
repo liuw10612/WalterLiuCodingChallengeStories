@@ -4,8 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NexTechCodingChallengeStories.Web.Services.CacheService;
-using NexTechCodingChallengeStories.Web.Services.DataService;
+using NexTechCodingChallengeStories.Web.Services.DataServices;
+using NexTechCodingChallengeStories.Web.Services.Interfaces;
 using NexTechCodingChallengeStories.Web.Services.Repository;
+using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +19,11 @@ builder.Services.AddControllersWithViews();
 // DI supporting services
 builder.Services.AddSingleton(o=> new DataService());
 builder.Services.AddSingleton(o => new CachedDataService());
-builder.Services.AddSingleton(o => new StoryRepository(new DataService(), new CachedDataService()));
-
+//builder.Services.AddSingleton(o => new StoryRepository(builder.GetRequiredService<ILogger<StoryRepository>>(), new DataService(), new CachedDataService()));
+builder.Services.AddTransient<StoryRepository>(provider =>
+{
+    return new StoryRepository(provider.GetRequiredService<ILogger<StoryRepository>>(), new DataService(), new CachedDataService());
+});
 
 var app = builder.Build();
 

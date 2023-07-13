@@ -9,6 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{BF687228-5AA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTechCodingChallengeStories.Web.Services", "src\NexTechCodingChallengeStories.Web.Services\NexTechCodingChallengeStories.Web.Services.csproj", "{BB58FE7E-0321-4544-BBEC-8676858C5556}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CBD64E41-B1BE-45A7-B2D8-3B5CF6605997}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexTechCodingChallengeStories.Web.Services.Test", "src\NexTechCodingChallengeStories.Web.Services.Test\NexTechCodingChallengeStories.Web.Services.Test.csproj", "{79C3208C-7168-437C-A912-99EE201398AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,10 @@ Global
 		{BB58FE7E-0321-4544-BBEC-8676858C5556}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB58FE7E-0321-4544-BBEC-8676858C5556}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB58FE7E-0321-4544-BBEC-8676858C5556}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79C3208C-7168-437C-A912-99EE201398AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79C3208C-7168-437C-A912-99EE201398AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79C3208C-7168-437C-A912-99EE201398AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79C3208C-7168-437C-A912-99EE201398AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{54E2EFE4-E867-4CF2-8B77-16B84F17E928} = {BF687228-5AAC-4897-BAFD-9CBB5E33EDEC}
 		{BB58FE7E-0321-4544-BBEC-8676858C5556} = {BF687228-5AAC-4897-BAFD-9CBB5E33EDEC}
+		{79C3208C-7168-437C-A912-99EE201398AD} = {CBD64E41-B1BE-45A7-B2D8-3B5CF6605997}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C423A017-EA65-4385-B984-18130F71E104}

@@ -6,10 +6,14 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NexTechCodingChallengeStories.Web.Services.DataService
+namespace NexTechCodingChallengeStories.Web.Services.DataServices
 {
     public class DataService : IDataService
     {
+        public DataService()
+        {
+        }
+
         public async Task<T> GetData<T>(string baseurl, string jsonEndpointUrl)
         {
             T TObject = default(T);
