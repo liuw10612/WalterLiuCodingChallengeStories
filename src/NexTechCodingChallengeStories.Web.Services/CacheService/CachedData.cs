@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace NexTechCodingChallengeStories.Web.Services.CacheService
 {
-    public  class CachedDataService  
+    public  class CachedDataService  : ICachedData
     {
         private List<StoryTitle>? cachedStoriesOnePage = null;
         private List<int> cachedStoryAllIds = new List<int> { };
+
         private DateTime cacheTime=DateTime.Now.AddDays(-2);
         public static int CachePageNumber = 1;
         public static int CachePageSize = 10;

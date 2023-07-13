@@ -1,22 +1,26 @@
 ﻿using NexTechCodingChallengeStories.Web.Services.Entities;
 using NexTechCodingChallengeStories.Web.Services.Interfaces;
-using NexTechCodingChallengeStories.Web.Services.DataService;
+using NexTechCodingChallengeStories.Web.Services.DataServices;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using NexTechCodingChallengeStories.Web.Services.CacheService;
+using System.Linq.Expressions;
+using Microsoft.Extensions.Logging;
 
 namespace NexTechCodingChallengeStories.Web.Services.Repository
 {
     public class StoryRepository : IStoryRepository
     {
         private const string _baseAPIUrl = "https://hacker-news.firebaseio.com";
+        ILogger<StoryRepository> _logger;
         private IDataService _dataService;
-        private CachedDataService _cachedDataService;
+        private ICachedData _cachedDataService;
 
-        public StoryRepository(IDataService dataService, CachedDataService cachedDataService)
+        public StoryRepository(ILogger<StoryRepository> logger, IDataService dataService, ICachedData cachedDataService)
         {
+            _logger= logger;
             _dataService = dataService;
             _cachedDataService = cachedDataService;
         }
@@ -33,17 +37,30 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
 
         public async Task<List<int>> GetNewStoriesAsync()
         {
-            string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
+            try
+            { 
+                string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
 
-            var newStories = await _dataService.GetAllData(_baseAPIUrl, newStoriesEndpoint);
+                var newStories = await _dataService.GetAllData(_baseAPIUrl, newStoriesEndpoint);
 
-            return newStories;
+                return newStories;
+            }
+            catch (DataSeviceException e)
+            {
+                _logger.LogError(e, "Http Error while GetNewStoriesAsync()");
+                return null;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "No HTTP Error while GetNewStoriesAsync()");
+                throw;
+            }
         }
         public async Task<List<StoryTitle>> GetOnePageStoriesAsync(int page, int pageSize)
         {
             try
             {
-                var cachedDataOnePage = _cachedDataService.GetCachedStoresOnePage(page, pageSize);
+                var cachedDataOnePage =  _cachedDataService.GetCachedStoresOnePage(page, pageSize);
                 if (cachedDataOnePage != null)
                     return cachedDataOnePage; // cached data exist, use it.
                 else // no cached one page or expired
@@ -89,22 +106,42 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
                     return stories;
                 }
             }
+            catch (DataSeviceException e)
+            {
+                _logger.LogError(e, "Http Error while GetOnePageStoriesAsync()");
+                return null;
+            }
             catch (Exception e)
             {
+                _logger.LogError(e, "No HTTP Error while GetOnePageStoriesAsync()");
                 throw;
-            }  
+            }
         }
         public async Task<int> GetStoriesCountAsync()
         {
-            string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
-
-            var newStories = await _dataService.GetAllData(_baseAPIUrl, newStoriesEndpoint);
-            if (newStories.Count > 0)
+            try
             {
-                _cachedDataService.SetCachedDataAllIds(newStories); // save for cache
-                return newStories.Count;
+                string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
+
+                var newStories = await _dataService.GetAllData(_baseAPIUrl, newStoriesEndpoint);
+                if (newStories !=null && newStories.Count > 0)
+                {
+                    _cachedDataService.SetCachedDataAllIds(newStories); // save for cache
+                    return newStories.Count;
+                }
+                return 0;
             }
-            return 0;   
+            catch (DataSeviceException e)
+            {
+                _logger.LogError(e, "Http Error while GetStoriesCountAsync()");
+                return 0;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "No HTTP Error while GetStoriesCountAsync()");
+                throw;
+            }
+
         }
     }
 }

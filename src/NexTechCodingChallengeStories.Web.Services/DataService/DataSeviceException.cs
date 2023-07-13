@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NexTechCodingChallengeStories.Web.Services.DataService
+namespace NexTechCodingChallengeStories.Web.Services.DataServices
 {
     public class DataSeviceException : Exception
     {
