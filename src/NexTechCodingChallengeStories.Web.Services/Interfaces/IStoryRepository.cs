@@ -13,6 +13,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Interfaces
 
         Task<List<int>> GetNewStoriesAsync();
         Task<List<StoryTitle>> GetOnePageStoriesAsync(int page, int pageSize);
+        Task<List<StoryTitle>> GetOnePageFullSearchStoriesAsync(string searchText);
         Task<int> GetStoriesCountAsync();
     }
 }

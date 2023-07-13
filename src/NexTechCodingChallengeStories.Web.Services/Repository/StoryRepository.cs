@@ -24,20 +24,29 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
         }
         public StoryRepository(ILogger<StoryRepository> logger, IDataService dataService, ICachedData cachedDataService)
         {
-            _logger= logger;
+            _logger = logger;
             _dataService = dataService;
             _cachedDataService = cachedDataService;
         }
 
         public async Task<Story> GetByIdAsync(int id)
         {
-            
-            string itemEndpoint = $"/v0/item/{id}.json?print=pretty";
+            try
+            {
+                string itemEndpoint = $"/v0/item/{id}.json?print=pretty";
 
-            var item = await _dataService.GetData<Story>(_baseAPIUrl, itemEndpoint);
+                var item = await _dataService.GetData<Story>(_baseAPIUrl, itemEndpoint);
 
-            return item;
+                return item;
+            }   
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Error while GetByIdAsync id = {id}");
+                return null;
+             }
         }
+
+
 
         public async Task<List<int>> GetNewStoriesAsync()
         {
@@ -83,6 +92,9 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
                     List<StoryTitle> stories = new List<StoryTitle>();  //return list :  title + url + id + time
                     foreach (int storyId in selectedPage)
                     {
+                        if (!_cachedDataService.NotBadUrlId(storyId))   // make sure it is not the old bad one
+                            continue;
+
                         var story = await GetByIdAsync(storyId);
 
                         if (story != null )
@@ -118,6 +130,58 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
             catch (Exception e)
             {
                 _logger.LogError(e, "No HTTP Error while GetOnePageStoriesAsync()");
+                throw;
+            }
+        }
+        public async Task<List<StoryTitle>> GetOnePageFullSearchStoriesAsync(string searchText)
+        {
+            try
+            {
+                List<int> cachedDataAllIds = _cachedDataService.GetCachedStoresAllIds();
+                if (cachedDataAllIds.Count == 0) // 1st time or expired
+                {
+                    cachedDataAllIds = await GetNewStoriesAsync();
+                    _cachedDataService.SetCachedDataAllIds(cachedDataAllIds);
+                }
+
+                // loop all ids and filter by searchText and ignore  bad url ones
+                List<StoryTitle> stories = new List<StoryTitle>();  //return list :  title + url + id + time
+                foreach (int storyId in cachedDataAllIds)
+                {
+                    if (!_cachedDataService.NotBadUrlId(storyId))
+                        continue;
+
+                    var story = await GetByIdAsync(storyId);
+
+                    if (story != null)
+                    {
+                        if (Uri.IsWellFormedUriString(story.url, UriKind.RelativeOrAbsolute)) {  // ignore bad URL ones)
+                            if (story.title.ToLower().Contains(searchText.ToLower())) {
+                                stories.Add(new StoryTitle
+                                {
+                                    id = story.id,
+                                    time = story.time,
+                                    title = story.title,
+                                    url = story.url,
+                                });
+                            }
+                        }
+                        else // remove this bad URL one from the Id list, so it will not be checked next time
+                        {
+                            _cachedDataService.RemoveOneStory(storyId);
+                        }
+                    }
+                }
+                return stories;
+            }
+            catch (DataSeviceException e)
+            {
+                _logger.LogError(e, "Http Error while GetOnePageFullSearchStoriesAsync()");
+                return null;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "No HTTP Error while GetOnePageFullSearchStoriesAsync()");
                 throw;
             }
         }

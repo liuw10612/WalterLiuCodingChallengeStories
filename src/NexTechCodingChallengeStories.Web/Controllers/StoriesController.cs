@@ -114,6 +114,24 @@ namespace NexTechCodingChallengeStories.Web.Controllers
             }
 
         }
+        [HttpGet("onePageFullSearch")]
+        public async Task<IActionResult> OnePageFullSearch([FromQuery(Name = "s")]  string searchText)
+        {
+            try
+            {
+                var stories = await _storyRepository.GetOnePageFullSearchStoriesAsync(searchText);
+                if (stories.Count > 0)
+                    return Ok(stories.OrderByDescending(x => x.time));
+                else
+                    return NotFound();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Error while OnePage");
+                return NotFound();
+            }
+
+        }
         [HttpGet("storiesCount")]
         public async Task<IActionResult> GetStoriesCount()
         {
