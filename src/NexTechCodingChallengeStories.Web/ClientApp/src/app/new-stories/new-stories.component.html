@@ -5,6 +5,36 @@
 <p *ngIf="!stories"><em>Loading...</em></p>
 
 
+<div class="row">
+  <div class="col-md-4">
+    test 4
+  </div>
+
+  <div class="col-md-2">
+
+    <button class="btn btn-default" style="width:100%" [disabled]="loading" >
+      <fa-icon *ngIf="loading" icon="spinner" [spin]="true" size ="2x"></fa-icon>&nbsp;
+      {{ loading ? "loading..." : "Refresh" }}
+    </button>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group" style="text-align: right">
+      <div class="input-group">
+        <input type="text" [(ngModel)]="searchText" class="form-control" placeholder="Search" />
+
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit">
+            <fa-icon icon="search"></fa-icon>
+            Search
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   <hr class="my-5">
   <article>
     <h2 class="h6">Selecting Per Page Amount Via Dropdrown {{page}} -- {{calculateTotalPages}}</h2>
@@ -45,7 +75,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let story of stories">
+      <tr *ngFor="let story of stories | filter : searchText : ['title']">
         <td>{{ story.id }}</td>
         <td>{{ story.time }}</td>
         <td>
