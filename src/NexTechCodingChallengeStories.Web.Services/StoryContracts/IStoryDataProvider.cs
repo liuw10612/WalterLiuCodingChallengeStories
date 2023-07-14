@@ -1,5 +1,5 @@
 ﻿using NexTechCodingChallengeStories.Web.Services.CacheService;
-using NexTechCodingChallengeStories.Web.Services.DataServices;
+using NexTechCodingChallengeStories.Web.Services.HttpService;
 using NexTechCodingChallengeStories.Web.Services.Model;
 using System;
 using System.Collections.Generic;

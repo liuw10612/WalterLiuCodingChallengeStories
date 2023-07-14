@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NexTechCodingChallengeStories.Web.Services.CacheService;
-using NexTechCodingChallengeStories.Web.Services.DataServices;
+using NexTechCodingChallengeStories.Web.Services.HttpService;
 using NexTechCodingChallengeStories.Web.Services.Repository;
 using NexTechCodingChallengeStories.Web.Services.Test.Fixtures;
 
@@ -23,7 +23,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Repository
             const string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
 
             var mockLogger = new Mock<ILogger<StoryDataProvider>>();
-            var mockDataService = new Mock<IDataService>();
+            var mockDataService = new Mock<IHttpService>();
             var mockCachedDataService = new Mock<ICachedData>();
 
             mockDataService
@@ -50,7 +50,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Repository
             const string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
 
             var mockLogger = new Mock<ILogger<StoryDataProvider>>();
-            var mockDataService = new Mock<IDataService>();
+            var mockDataService = new Mock<IHttpService>();
             var mockCachedDataService = new Mock<ICachedData>();
 
             mockDataService

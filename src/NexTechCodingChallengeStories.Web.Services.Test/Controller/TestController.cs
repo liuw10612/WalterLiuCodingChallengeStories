@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NexTechCodingChallengeStories.Web.Controllers;
 using NexTechCodingChallengeStories.Web.Services.CacheService;
-using NexTechCodingChallengeStories.Web.Services.DataServices;
+using NexTechCodingChallengeStories.Web.Services.HttpService;
 using NexTechCodingChallengeStories.Web.Services.Model;
 using NexTechCodingChallengeStories.Web.Services.Interfaces;
 using NexTechCodingChallengeStories.Web.Services.Repository;

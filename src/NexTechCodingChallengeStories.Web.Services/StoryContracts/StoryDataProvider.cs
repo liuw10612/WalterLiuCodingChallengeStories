@@ -1,5 +1,5 @@
 ﻿using NexTechCodingChallengeStories.Web.Services.Model;
-using NexTechCodingChallengeStories.Web.Services.DataServices;
+using NexTechCodingChallengeStories.Web.Services.HttpService;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,12 +14,12 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
     {
         private const string _baseAPIUrl = "https://hacker-news.firebaseio.com";
         ILogger<StoryDataProvider> _logger;
-        private IDataService _dataService;
+        private IHttpService _dataService;
         private ICachedData _cachedDataService;
 
         public StoryDataProvider() { }
 
-        public StoryDataProvider(ILogger<StoryDataProvider> logger, IDataService dataService, ICachedData cachedDataService)
+        public StoryDataProvider(ILogger<StoryDataProvider> logger, IHttpService dataService, ICachedData cachedDataService)
         {
             _logger = logger;
             _dataService = dataService;
@@ -32,7 +32,7 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
             {
                 string itemEndpoint = $"/v0/item/{id}.json?print=pretty";
 
-                var item = await _dataService.GetData<Story>(_baseAPIUrl, itemEndpoint);
+                var item = await _dataService.HttpGetGeneric<Story>(_baseAPIUrl+itemEndpoint);
 
                 return item;
             }   
@@ -51,11 +51,11 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
             { 
                 string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
 
-                var newStories = await _dataService.GetAllData(_baseAPIUrl, newStoriesEndpoint);
+                var newStories = await _dataService.HttpGetGeneric<List<int>>(_baseAPIUrl+newStoriesEndpoint);
 
                 return newStories;
             }
-            catch (DataSeviceException e)
+            catch (HttpSeviceException e)
             {
                 _logger.LogError(e, "DataSeviceException : Http Error while GetNewStoriesAsync()");
                 throw;
@@ -112,7 +112,7 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
                     return stories;
                 }
             }
-            catch (DataSeviceException e)
+            catch (HttpSeviceException e)
             {
                 _logger.LogError(e, "DataSeviceException : Http Error while GetOnePageStoriesAsync()");
                 throw;
@@ -157,7 +157,7 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
                 }
                 return stories;
             }
-            catch (DataSeviceException e)
+            catch (HttpSeviceException e)
             {
                 _logger.LogError(e, "Http Error while GetOnePageFullSearchStoriesAsync()");
                 return null;
@@ -174,7 +174,7 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
             {
                 string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
 
-                var newStories = await _dataService.GetAllData(_baseAPIUrl, newStoriesEndpoint);
+                var newStories = await _dataService.HttpGetGeneric<List<int>>(_baseAPIUrl + newStoriesEndpoint) ;
                 if (newStories !=null && newStories.Count > 0)
                 {
                     _cachedDataService.SetCachedDataAllIds(newStories); // save for cache
@@ -182,7 +182,7 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
                 }
                 return 0;
             }
-            catch (DataSeviceException e)
+            catch (HttpSeviceException e)
             {
                 _logger.LogError(e, "Http Error while GetStoriesCountAsync()");
                 return 0;
