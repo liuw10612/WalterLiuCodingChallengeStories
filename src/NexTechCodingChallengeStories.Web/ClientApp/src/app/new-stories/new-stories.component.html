@@ -1,13 +1,3 @@
-<!--<div class="row">
-  <div class="col-md-11 ">
-    <h1 id="tableLabel">Hacker News Stories  </h1>
-  </div>
-  <div class="col-md-1 ">
-    {{collectionSize}}
-  </div>
-</div>-->
-
-
 <div class="row  ">
   <nav class="col-5 col-md-3 mt-2">
     <div ngbDropdown class="d-inline-block" [autoClose]="'inside'">
@@ -20,6 +10,7 @@
       </div> {{perPage}} per page
     </div>
   </nav>
+
   <nav class="col-5 col-md-3 mt-2 pr-0 d-flex justify-content-end">
     <ngb-pagination (pageChange)="onPageChange($any($event))" [disabled]="loading" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="true" [pageSize]="perPage" [ellipses]="false" [boundaryLinks]="true" size="sm">
       <ng-template ngbPaginationFirst><i><<</i></ng-template>
@@ -49,24 +40,40 @@
       </div>
     </div>
   </nav>
-
 </div>
 
 <hr class="my-3">
 
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stories">
-  <thead>
-    <tr>
-      <th><h1>Hacker News Stories  </h1></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let story of stories | filter : searchText : ['title']">
-      <td>
-        <a href="{{story.url}}"> {{ story.title }} </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div *ngIf="stories$ | async as stories1; else loadingOrError">
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stories1">
+    <thead>
+      <tr>
+        <th><h1> Hacker News Stories </h1></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let story of stories1 | filter : searchText : ['title']">
+        <td>
+          <a href="{{story.url}}"> {{ story.title }} </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div> 
+
+<div *ngIf="displayLog">
+  <ul class="log" #logWindow [scrollTop]="logWindow.scroll">
+    <li *ngFor="let entry of logEntries"><em>{{entry.time | date:'shortTime'}}</em> {{entry.message}}</li>
+  </ul>
+</div>
+
+<ng-template #loadingOrError>
+  <span *ngIf="storyErrors$ | async as message; else loading">
+    {{message}}
+  </span>
+  <ng-template #loading>
+    <fa-icon class="spinclass2" icon="spinner" [spin]="true" ></fa-icon>
+  </ng-template>
+</ng-template>
 
 

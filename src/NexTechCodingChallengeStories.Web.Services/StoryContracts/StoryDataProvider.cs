@@ -1,6 +1,5 @@
-﻿using NexTechCodingChallengeStories.Web.Services.Entities;
-using NexTechCodingChallengeStories.Web.Services.Interfaces;
-using NexTechCodingChallengeStories.Web.Services.DataServices;
+﻿using NexTechCodingChallengeStories.Web.Services.Model;
+using NexTechCodingChallengeStories.Web.Services.HttpService;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,63 +8,55 @@ using NexTechCodingChallengeStories.Web.Services.CacheService;
 using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
 
-namespace NexTechCodingChallengeStories.Web.Services.Repository
-{
-    public class StoryRepository : IStoryRepository
+namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
+{ 
+    public class StoryDataProvider : IStoryDataProvider
     {
-        private const string _baseAPIUrl = "https://hacker-news.firebaseio.com";
-        ILogger<StoryRepository> _logger;
-        private IDataService _dataService;
+        private const string _baseUrl = "https://hacker-news.firebaseio.com";
+        ILogger<StoryDataProvider> _logger;
+        private IHttpService _dataService;
         private ICachedData _cachedDataService;
 
-        public StoryRepository()
-        {
+        public StoryDataProvider() { }
 
-        }
-        public StoryRepository(ILogger<StoryRepository> logger, IDataService dataService, ICachedData cachedDataService)
+        public StoryDataProvider(ILogger<StoryDataProvider> logger, IHttpService dataService, ICachedData cachedDataService)
         {
             _logger = logger;
             _dataService = dataService;
             _cachedDataService = cachedDataService;
         }
 
-        public async Task<Story> GetByIdAsync(int id)
+        public async Task<Story> GetOneStoryByIdAsync(int id)
         {
             try
             {
-                string itemEndpoint = $"/v0/item/{id}.json?print=pretty";
-
-                var item = await _dataService.GetData<Story>(_baseAPIUrl, itemEndpoint);
-
+                string url = _baseUrl + $"/v0/item/{id}.json?print=pretty";
+                var item = await _dataService.HttpGetGeneric<Story>(url);
                 return item;
             }   
             catch (Exception e)
             {
-                _logger.LogError(e, $"Error while GetByIdAsync id = {id}");
+                _logger.LogError(e, $"Error while GetOneStoryByIdAsync id = {id}");
                 return null;
              }
         }
 
-
-
-        public async Task<List<int>> GetNewStoriesAsync()
+        public async Task<List<int>> GetAllStoriesIdsAsync()
         {
             try
             { 
-                string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
-
-                var newStories = await _dataService.GetAllData(_baseAPIUrl, newStoriesEndpoint);
-
+                string url = _baseUrl + $"/v0/newstories.json?print=pretty";
+                var newStories = await _dataService.HttpGetGeneric<List<int>>(url);
                 return newStories;
             }
-            catch (DataSeviceException e)
+            catch (HttpSeviceException e)
             {
-                _logger.LogError(e, "Http Error while GetNewStoriesAsync()");
-                return null;
+                _logger.LogError(e, "DataSeviceException : Http Error while GetAllStoriesIdsAsync()");
+                throw;
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "No HTTP Error while GetNewStoriesAsync()");
+                _logger.LogError(e, "No HTTP Error while GetAllStoriesIdsAsync()");
                 throw;
             }
         }
@@ -74,41 +65,33 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
             try
             {
                 var cachedDataOnePage =  _cachedDataService.GetCachedStoresOnePage(page, pageSize);
-                if (cachedDataOnePage != null)
+                if (cachedDataOnePage !=null && cachedDataOnePage.Count > 0)
                     return cachedDataOnePage; // cached data exist, use it.
                 else // no cached one page or expired
                 {
                     List<int> cachedDataAllIds = _cachedDataService.GetCachedStoresAllIds();
                     if (cachedDataAllIds.Count == 0) // 1st time or expired
                     {
-                        cachedDataAllIds = await GetNewStoriesAsync();
+                        cachedDataAllIds = await GetAllStoriesIdsAsync();
                         _cachedDataService.SetCachedDataAllIds(cachedDataAllIds);
                     }
                     // take one page IDs
                     var selectedPage = cachedDataAllIds.Skip((page - 1) * pageSize).Take(pageSize);
 
                     // loop one page ids and filter out bad url ones
-                    // BUG : it may have less than one page size items
+                    // Issue : it may have less than one page size items because of bad urls ingored;
                     List<StoryTitle> stories = new List<StoryTitle>();  //return list :  title + url + id + time
                     foreach (int storyId in selectedPage)
                     {
-                        if (!_cachedDataService.NotBadUrlId(storyId))   // make sure it is not the old bad one
+                        if (!_cachedDataService.NotBadUrlId(storyId))   // make sure it is not one of the bad ones
                             continue;
 
-                        var story = await GetByIdAsync(storyId);
-
+                        var story = await GetOneStoryByIdAsync(storyId);
                         if (story != null )
                         {
-                            if (Uri.IsWellFormedUriString(story.url, UriKind.RelativeOrAbsolute))
+                            if (Uri.IsWellFormedUriString(story.Url, UriKind.RelativeOrAbsolute)) // ignore bad URL ones
                             {
-                                // ignore bad URL ones)
-                                stories.Add(new StoryTitle
-                                {
-                                    id = story.id,
-                                    time = story.time,
-                                    title = story.title,
-                                    url = story.url,
-                                });
+                                stories.Add(new StoryTitle(story));
                             }
                             else // remove this bad one from the list, so it will not be checked
                             {
@@ -122,10 +105,10 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
                     return stories;
                 }
             }
-            catch (DataSeviceException e)
+            catch (HttpSeviceException e)
             {
-                _logger.LogError(e, "Http Error while GetOnePageStoriesAsync()");
-                return null;
+                _logger.LogError(e, "DataSeviceException : Http Error while GetOnePageStoriesAsync()");
+                throw;
             }
             catch (Exception e)
             {
@@ -133,38 +116,30 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
                 throw;
             }
         }
-        public async Task<List<StoryTitle>> GetOnePageFullSearchStoriesAsync(string searchText)
+        public async Task<List<StoryTitle>?> GetStoriesFullSearchAsync(string searchText)
         {
             try
             {
                 List<int> cachedDataAllIds = _cachedDataService.GetCachedStoresAllIds();
                 if (cachedDataAllIds.Count == 0) // 1st time or expired
                 {
-                    cachedDataAllIds = await GetNewStoriesAsync();
+                    cachedDataAllIds = await GetAllStoriesIdsAsync();
                     _cachedDataService.SetCachedDataAllIds(cachedDataAllIds);
                 }
 
-                // loop all ids and filter by searchText and ignore  bad url ones
+                // loop all ids and filter by searchText and ignore bad url ones
                 List<StoryTitle> stories = new List<StoryTitle>();  //return list :  title + url + id + time
                 foreach (int storyId in cachedDataAllIds)
                 {
                     if (!_cachedDataService.NotBadUrlId(storyId))
                         continue;
 
-                    var story = await GetByIdAsync(storyId);
-
+                    var story = await GetOneStoryByIdAsync(storyId);
                     if (story != null)
                     {
-                        if (Uri.IsWellFormedUriString(story.url, UriKind.RelativeOrAbsolute)) {  // ignore bad URL ones)
-                            if (story.title.ToLower().Contains(searchText.ToLower())) {
-                                stories.Add(new StoryTitle
-                                {
-                                    id = story.id,
-                                    time = story.time,
-                                    title = story.title,
-                                    url = story.url,
-                                });
-                            }
+                        if (Uri.IsWellFormedUriString(story.Url, UriKind.RelativeOrAbsolute)) {  // ignore bad URL ones)
+                            if (story.Title.ToLower().Contains(searchText.ToLower()))
+                                stories.Add(new StoryTitle(story));
                         }
                         else // remove this bad URL one from the Id list, so it will not be checked next time
                         {
@@ -174,14 +149,14 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
                 }
                 return stories;
             }
-            catch (DataSeviceException e)
+            catch (HttpSeviceException e)
             {
-                _logger.LogError(e, "Http Error while GetOnePageFullSearchStoriesAsync()");
+                _logger.LogError(e, "Http Error while GetStoriesFullSearchAsync()");
                 return null;
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "No HTTP Error while GetOnePageFullSearchStoriesAsync()");
+                _logger.LogError(e, "No HTTP Error while GetStoriesFullSearchAsync()");
                 throw;
             }
         }
@@ -189,9 +164,9 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
         {
             try
             {
-                string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
+                string url = _baseUrl +  $"/v0/newstories.json?print=pretty";
 
-                var newStories = await _dataService.GetAllData(_baseAPIUrl, newStoriesEndpoint);
+                var newStories = await _dataService.HttpGetGeneric<List<int>>(url);
                 if (newStories !=null && newStories.Count > 0)
                 {
                     _cachedDataService.SetCachedDataAllIds(newStories); // save for cache
@@ -199,7 +174,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
                 }
                 return 0;
             }
-            catch (DataSeviceException e)
+            catch (HttpSeviceException e)
             {
                 _logger.LogError(e, "Http Error while GetStoriesCountAsync()");
                 return 0;
@@ -209,7 +184,6 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
                 _logger.LogError(e, "No HTTP Error while GetStoriesCountAsync()");
                 throw;
             }
-
         }
     }
 }

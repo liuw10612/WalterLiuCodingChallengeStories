@@ -1,7 +1,8 @@
-  
-/* Applies to all elements with <... class="someclass"> specified. */
 .spinclass {
   color: blue;
+}
+.spinclass2 {
+  color: hotpink;
 }
 
 li.page-item.disabled {

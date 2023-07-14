@@ -4,8 +4,8 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NexTechCodingChallengeStories.Web.Controllers;
 using NexTechCodingChallengeStories.Web.Services.CacheService;
-using NexTechCodingChallengeStories.Web.Services.DataServices;
-using NexTechCodingChallengeStories.Web.Services.Entities;
+using NexTechCodingChallengeStories.Web.Services.HttpService;
+using NexTechCodingChallengeStories.Web.Services.Model;
 using NexTechCodingChallengeStories.Web.Services.Interfaces;
 using NexTechCodingChallengeStories.Web.Services.Repository;
 using NexTechCodingChallengeStories.Web.Services.Test.Fixtures;
@@ -24,13 +24,13 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Controller
         {
             // Arrange
             var mockLogger = new Mock<ILogger<StoriesController>>();
-            var storyRepository = new StoryRepository();
+            var storyDataProvider = new StoryDataProvider();
 
-            //mockStoryRepository
+            //mockStoryDataProvider
             //    .Setup(Service => Service.GetOnePageStoriesAsync(1, 10))
             //    .ReturnsAsync(new List<StoryTitle>());
 
-            var sut = new StoriesController(mockLogger.Object, storyRepository);
+            var sut = new StoriesController(mockLogger.Object, storyDataProvider);
 
             // Act
             var result = await sut.OnePage(1, 10);

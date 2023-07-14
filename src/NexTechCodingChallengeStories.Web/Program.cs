@@ -4,9 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NexTechCodingChallengeStories.Web.Services.CacheService;
-using NexTechCodingChallengeStories.Web.Services.DataServices;
-using NexTechCodingChallengeStories.Web.Services.Interfaces;
-using NexTechCodingChallengeStories.Web.Services.Repository;
+using NexTechCodingChallengeStories.Web.Services.HttpService;
+using NexTechCodingChallengeStories.Web.Services.StoryContracts;
 using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,12 +16,12 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddControllersWithViews();
 // DI supporting services
-builder.Services.AddSingleton(o=> new DataService());
+builder.Services.AddSingleton(o=> new HttpService());
 builder.Services.AddSingleton(o => new CachedDataService());
-//builder.Services.AddSingleton(o => new StoryRepository(builder.GetRequiredService<ILogger<StoryRepository>>(), new DataService(), new CachedDataService()));
-builder.Services.AddSingleton<StoryRepository>(provider =>
+//builder.Services.AddSingleton(o => new StoryDataProvider(builder.GetRequiredService<ILogger<StoryDataProvider>>(), new DataService(), new CachedDataService()));
+builder.Services.AddSingleton<StoryDataProvider>(provider =>
 {
-    return new StoryRepository(provider.GetRequiredService<ILogger<StoryRepository>>(), new DataService(), new CachedDataService());
+    return new StoryDataProvider(provider.GetRequiredService<ILogger<StoryDataProvider>>(), new HttpService(), new CachedDataService());
 });
 
 var app = builder.Build();
