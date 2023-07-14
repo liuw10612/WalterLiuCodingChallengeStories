@@ -1,78 +1,79 @@
-<h1>Hello, Walter Liu</h1>
-<p>Welcome to code challenge, built with:</p>
-<ul>
-  <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-  <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for client-side code</li>
-  <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
+<h1 class="titleclass">Welcome to coding challenge, Walter Liu !</h1>
 
-<article>
-  Using the Hacker News API, create a solution that allows users to view the newest stories from the feed.
+<br />
+<body>
 
-  Your solution must be developed using an Angular front-end app that calls a C# .NET Core back-end restful API.
+  <section class="pragraph1">
+    <p>
+      Using the<a href='https://github.com/HackerNews/API'> Hacker News API</a>, create a solution that allows users to view the newest stories from the feed.
+      <br> Your solution must be developed using an Angular front-end app that calls a C# .NET Core back-end restful API.
+    </p>
+  </section>
 
-  The front-end UI should consist of:
+  <br />
 
-  A list of the newest stories
-  Each list item should include the title and a link to the news article. Watch out for stories that do not have hyperlinks!
-  A search feature that allows users to find stories
-  A paging mechanism. While we love reading, 200 stories on the page are a bit much.
-  Automated tests for your code
+  <section class="pragraph1">
+    <p>
+      The front-end UI should consist of:
+    </p>
+    <ul>
+      <li>      A list of the newest stories     </li>
+      <li>      Each list item should include the title and a link to the news article. Watch out for stories that do not have hyperlinks!    </li>
+      <li>      A search feature that allows users to find stories    </li>
+      <li>      A paging mechanism. While we love reading, 200 stories on the page are a bit much.    </li>
+      <li>      Automated tests for your code </li>
+    </ul>
+  </section>
 
+  <br />
+  <section class="pragraph1">
+    <p>    The back-end API should consist of:  </p>
+    <ul>
+      <li>      Usage of dependency injection, it's built-in so why not?     </li>
+      <li>      Caching of the newest stories    </li>
+      <li>      Automated tests for your code </li>
+    </ul>
+  </section>
 
-  The back-end API should consist of:
+  <br />
+  <section class="pragraph1">
+    While we would love seeing an Angular only solution to this problem, we really need to see your CSharpness.
+    <br />
+    If you're up for it, upload your code challenge to an Azure website and send us the link! Azure websites have free trial periods, so you don't have to pay a dime <fa-icon icon="smile"></fa-icon>
+    <br />
+    Put the final solution in a GitHub repository for our review and send us the link.
+  </section>
 
-  Usage of dependency injection, it's built-in so why not?
-  Caching of the newest stories
-  Automated tests for your code
+  <br />
+  <section class="pragraph1">
+    <p>     Your solution will be evaluated on:     </p>
+    <ul>
+      <li>      Elegance of design.    </li>
+      <li>      Clean and understandable code.    </li>
+      <li>      Use of automated tests (integration and unit).    </li>
+      <li>Demonstrated understanding of ASP.NET Core, Angular, C#, TypeScript and dependency injection. </li>
+    </ul>
+  </section>
 
+  <br />
+  <section class="pragraph1">
+    <p>
+      Your solution will not be considered for the following reasons:
+    </p>
 
-  While we would love seeing an Angular only solution to this problem, we really need to see your CSharpness.
+    <ul>
+      <li>      Cannot clone solution from GitHub repository provided.     </li>
+      <li>      The cloned solution will not compile locally.    </li>
+      <li>      Compiled solution does not run and provide the functionality described above.     </li>
+      <li>      Automated tests will not run and pass.    </li>
+      <li>      Use of frameworks other than Angular (Don't use Vue, React, Razor, etc...).     </li>
+      <li>      Plagiarism of others' code.</li>
+    </ul>
 
+    <p>
+      This challenge was designed to help you practice with coding and dialogue between you and our dev team. We want to see your code so we can review it with you and have a conversation about what worked and what did not. If you run into issues, it's okay, let's chat through it!
+    </p>
+  </section>
 
-
-  If you're up for it, upload your code challenge to an Azure website and send us the link! Azure websites have free trial periods, so you don't have to pay a dime :)
-
-
-
-  Put the final solution in a GitHub repository for our review and send us the link.
-
-
-
-  Your solution will be evaluated on:
-
-  Elegance of design.
-  Clean and understandable code.
-  Use of automated tests (integration and unit).
-  Demonstrated understanding of ASP.NET Core, Angular, C#, TypeScript and dependency injection.
-
-
-  Your solution will not be considered for the following reasons:
-
-  Cannot clone solution from GitHub repository provided.
-  The cloned solution will not compile locally.
-  Compiled solution does not run and provide the functionality described above.
-  Automated tests will not run and pass.
-  Use of frameworks other than Angular (Don't use Vue, React, Razor, etc...).
-  Plagiarism of others' code.
-
-
-  This challenge was designed to help you practice with coding and dialogue between you and our dev team. We want to see your code so we can review it with you and have a conversation about what worked and what did not. If you run into issues, it's okay, let's chat through it!
-
-
-
-  Best,
-
-  Devin Ossi
-
-
-
-  Note, we are not looking for the simplest solution.
-
-</article>
-<ul>
-  <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-  <li><strong>Angular CLI integration</strong>. In development mode, there's no need to run <code>ng serve</code>. It runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-  <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
-</ul>
-<p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+  <span class="badge bg-info"> Note, we are not looking for the simplest solution.  </span>
+</body>

@@ -1,0 +1,30 @@
+section {
+  border: 1px solid black;
+  padding: 4px;
+  margin-bottom: 8px;
+}
+.pragraph1 {
+  margin: 1px;
+  background-color: rgb(230, 230, 217);
+  font-family: arial, sans-serif;
+  font-size: 16px;
+}
+.pragraph2 {
+  margin: 1px;
+  background-color: rgb(230, 230, 217);
+  font-family: arial, sans-serif;
+  font-size: 16px;
+}
+
+.pragraph3 {
+  margin: 1px;
+  background-color: rgb(243, 243, 231);
+  font-family: arial, sans-serif;
+  font-size: 16px;
+}
+
+/* Applies to all elements with <... class="someclass"> specified. */
+.titleclass {
+  color: blue;
+}
+

@@ -1,0 +1,10 @@
+  
+/* Applies to all elements with <... class="someclass"> specified. */
+.spinclass {
+  color: blue;
+}
+
+li.page-item.disabled {
+  display: none;
+}
+
