@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NexTechCodingChallengeStories.Web.Services.Repository;
 using NexTechCodingChallengeStories.Web.Services.Model;
-using NexTechCodingChallengeStories.Web.Services.Interfaces;
+using NexTechCodingChallengeStories.Web.Services.StoryContracts;
 
 namespace NexTechCodingChallengeStories.Web.Controllers
 {
@@ -10,23 +9,23 @@ namespace NexTechCodingChallengeStories.Web.Controllers
     public class StoriesController : Controller
     {
         private readonly ILogger<StoriesController> _logger;
-        private IStoryRepository _storyRepository;
+        private IStoryDataProvider _storyDataProvider;
 
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public StoriesController(ILogger<StoriesController> logger, StoryRepository storyRepository)
+        public StoriesController(ILogger<StoriesController> logger, StoryDataProvider storyDataProvider)
         {
             _logger = logger;
-            _storyRepository = storyRepository;
+            _storyDataProvider = storyDataProvider;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            var newStories = _storyRepository.GetNewStoriesAsync();
+            var newStories = _storyDataProvider.GetNewStoriesAsync();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
@@ -44,7 +43,7 @@ namespace NexTechCodingChallengeStories.Web.Controllers
         {
             try
             {
-                var stories = await _storyRepository.GetOnePageStoriesAsync(currentPage, pageSize);
+                var stories = await _storyDataProvider.GetOnePageStoriesAsync(currentPage, pageSize);
                 if (stories.Count>0)
                     return Ok(stories.OrderByDescending(x => x.Time));
                 else
@@ -62,7 +61,7 @@ namespace NexTechCodingChallengeStories.Web.Controllers
         {
             try
             {
-                var stories = await _storyRepository.GetOnePageFullSearchStoriesAsync(searchText);
+                var stories = await _storyDataProvider.GetOnePageFullSearchStoriesAsync(searchText);
                 if (stories.Count > 0)
                     return Ok(stories.OrderByDescending(x => x.Time));
                 else
@@ -80,7 +79,7 @@ namespace NexTechCodingChallengeStories.Web.Controllers
         {
             try
             {
-                int storiesCount = await _storyRepository.GetStoriesCountAsync();
+                int storiesCount = await _storyDataProvider.GetStoriesCountAsync();
                 return Ok(storiesCount);
             }
             catch (Exception e)

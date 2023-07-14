@@ -1,5 +1,4 @@
 ﻿using NexTechCodingChallengeStories.Web.Services.Model;
-using NexTechCodingChallengeStories.Web.Services.Interfaces;
 using NexTechCodingChallengeStories.Web.Services.DataServices;
 using System;
 using System.Collections.Generic;
@@ -9,20 +8,18 @@ using NexTechCodingChallengeStories.Web.Services.CacheService;
 using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
 
-namespace NexTechCodingChallengeStories.Web.Services.Repository
-{
-    public class StoryRepository : IStoryRepository
+namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
+{ 
+    public class StoryDataProvider : IStoryDataProvider
     {
         private const string _baseAPIUrl = "https://hacker-news.firebaseio.com";
-        ILogger<StoryRepository> _logger;
+        ILogger<StoryDataProvider> _logger;
         private IDataService _dataService;
         private ICachedData _cachedDataService;
 
-        public StoryRepository()
-        {
+        public StoryDataProvider() { }
 
-        }
-        public StoryRepository(ILogger<StoryRepository> logger, IDataService dataService, ICachedData cachedDataService)
+        public StoryDataProvider(ILogger<StoryDataProvider> logger, IDataService dataService, ICachedData cachedDataService)
         {
             _logger = logger;
             _dataService = dataService;

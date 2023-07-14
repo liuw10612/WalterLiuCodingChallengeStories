@@ -22,7 +22,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Repository
             const string baseAPIUrl = "https://hacker-news.firebaseio.com";
             const string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
 
-            var mockLogger = new Mock<ILogger<StoryRepository>>();
+            var mockLogger = new Mock<ILogger<StoryDataProvider>>();
             var mockDataService = new Mock<IDataService>();
             var mockCachedDataService = new Mock<ICachedData>();
 
@@ -30,7 +30,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Repository
                 .Setup(Service => Service.GetAllData(baseAPIUrl, newStoriesEndpoint))
                 .ReturnsAsync(StoriesFixture.GetTestIds());
 
-            var sut = new StoryRepository(mockLogger.Object, mockDataService.Object, mockCachedDataService.Object);
+            var sut = new StoryDataProvider(mockLogger.Object, mockDataService.Object, mockCachedDataService.Object);
 
             // Act
             var result = await sut.GetStoriesCountAsync();
@@ -49,7 +49,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Repository
             const string baseAPIUrl = "https://hacker-news.firebaseio.com";
             const string newStoriesEndpoint = $"/v0/newstories.json?print=pretty";
 
-            var mockLogger = new Mock<ILogger<StoryRepository>>();
+            var mockLogger = new Mock<ILogger<StoryDataProvider>>();
             var mockDataService = new Mock<IDataService>();
             var mockCachedDataService = new Mock<ICachedData>();
 
@@ -57,7 +57,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Repository
                 .Setup(Service => Service.GetAllData(baseAPIUrl, newStoriesEndpoint))
                 .ReturnsAsync(StoriesFixture.GetTestIds());
 
-            var sut = new StoryRepository(mockLogger.Object, mockDataService.Object, mockCachedDataService.Object);
+            var sut = new StoryDataProvider(mockLogger.Object, mockDataService.Object, mockCachedDataService.Object);
             // Act
             var result = await sut.GetNewStoriesAsync();
 
