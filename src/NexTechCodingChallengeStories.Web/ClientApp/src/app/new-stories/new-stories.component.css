@@ -1,6 +1,9 @@
 .spinclass {
   color: blue;
 }
+.spinclass2 {
+  color: hotpink;
+}
 
 li.page-item.disabled {
   display: none;
