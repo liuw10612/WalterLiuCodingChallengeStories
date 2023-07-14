@@ -6,73 +6,77 @@ using System.Threading.Tasks;
 
 namespace NexTechCodingChallengeStories.Web.Services.CacheService
 {
+    /// <summary>
+    /// This class only cache the 1st page with page size = 10 at the moment,
+    /// it can be updated to cache multiple pages later;
+    /// Since all story ids is not much, they are cached when 1st time called
+    /// </summary>
     public class CachedDataService : ICachedData
     {
-        private List<StoryTitle>? cachedStoriesOnePage = null;
-        private List<int> cachedStoryAllIds = new List<int> { };
-        private List<int> badUrlIds = new List<int> { };
+        private List<StoryTitle> _cachedStoriesOnePage = new List<StoryTitle> { };
+        private List<int> _cachedStoryAllIds = new List<int> { };
+        private List<int> _badUrlIds = new List<int> { };
 
         private DateTime cacheTime = DateTime.Now.AddDays(-2);
-        public static int CachePageNumber = 1;
-        public static int CachePageSize = 10;
+        public const int CachePageNumber = 1;
+        public const int CachePageSize = 10;
 
         public CachedDataService()
         {
 
         }
-        public void SetCachedDataOnePage(List<StoryTitle>? _cachedStories)
+        public void SetCachedDataOnePage(List<StoryTitle>? cachedStories)
         {
             TimeSpan timeLapsed = DateTime.Now.Subtract(cacheTime);
-            if (cachedStoriesOnePage == null ||
-                timeLapsed.TotalHours > 1)
+            if (_cachedStoriesOnePage == null 
+                || _cachedStoriesOnePage.Count==0
+                || timeLapsed.TotalHours > 1)
             {
                 cacheTime = DateTime.Now;
-                cachedStoriesOnePage = _cachedStories;
+                _cachedStoriesOnePage.Clear();
+                _cachedStoriesOnePage.AddRange(cachedStories);
             }
         }
 
-        public List<StoryTitle>? GetCachedStoresOnePage(int _pageNumber, int _pageSize)
+        public List<StoryTitle>? GetCachedStoresOnePage(int pageNumber, int pageSize)
         {
             TimeSpan timeLapsed = DateTime.Now.Subtract(cacheTime); // could also write `now - otherTime`
-            if (CachePageNumber == _pageNumber &&
-                CachePageSize == _pageSize &&
-                timeLapsed.TotalHours < 1 &&
-                cachedStoriesOnePage != null)
-            {
-                return cachedStoriesOnePage;
-            }
+            if (CachePageNumber == pageNumber 
+                && CachePageSize == pageSize 
+                && timeLapsed.TotalHours < 1 
+                && _cachedStoriesOnePage != null)
+                return _cachedStoriesOnePage;
             else
                 return null;
         }
 
-        public void SetCachedDataAllIds(List<int> _cachedStoriesAllIds)
+        public void SetCachedDataAllIds(List<int> cachedStoriesAllIds)
         {
             TimeSpan timeLapsed = DateTime.Now.Subtract(cacheTime);
-            if (cachedStoryAllIds.Count == 0 || timeLapsed.TotalHours > 1)
+            if (_cachedStoryAllIds.Count == 0 || timeLapsed.TotalHours > 1)
             {
-                cachedStoryAllIds.Clear();
-                badUrlIds.Clear();
-                cachedStoryAllIds.AddRange(_cachedStoriesAllIds.OrderByDescending(x => x)); // get all ids, sort it 1st time, pretty fast
+                _cachedStoryAllIds.Clear();
+                _badUrlIds.Clear();
+                _cachedStoryAllIds.AddRange(cachedStoriesAllIds.OrderByDescending(x => x)); // get all ids, sort it 1st time, pretty fast
             }
         }
 
         public List<int> GetCachedStoresAllIds()
         {
-            return cachedStoryAllIds;
+            return _cachedStoryAllIds;
         }
         public void RemoveOneStory(int storyId)
         {
-            int? storyToRemove = badUrlIds.SingleOrDefault(r => r == storyId);
+            int? storyToRemove = _badUrlIds.SingleOrDefault(r => r == storyId);
             if (storyToRemove == null || storyToRemove == 0)
-                badUrlIds.Add(storyId);
+                _badUrlIds.Add(storyId);
         }
         public bool NotBadUrlId(int storyId)
         {
-            int? storyToFind = badUrlIds.SingleOrDefault(r => r == storyId);
+            int? storyToFind = _badUrlIds.SingleOrDefault(r => r == storyId);
             if (storyToFind == null || storyToFind ==0 )
                 return true;
             return false;
         }
-
     }
 }

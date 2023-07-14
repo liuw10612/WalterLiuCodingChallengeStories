@@ -43,7 +43,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Repository
         }
 
         [Fact]
-        public async Task Get_OnSuccess_GetNewStoriesAsync()
+        public async Task Get_OnSuccess_GetAllStoriesIdsAsync()
         {
             // Arrange
             const string baseAPIUrl = "https://hacker-news.firebaseio.com";
@@ -59,7 +59,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Repository
 
             var sut = new StoryDataProvider(mockLogger.Object, mockDataService.Object, mockCachedDataService.Object);
             // Act
-            var result = await sut.GetNewStoriesAsync();
+            var result = await sut.GetAllStoriesIdsAsync();
 
             // Assert
             Assert.Equal(result.Count, StoriesFixture.GetTestIds().Count);

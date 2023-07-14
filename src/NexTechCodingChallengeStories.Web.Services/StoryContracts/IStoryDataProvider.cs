@@ -9,10 +9,10 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
 { 
     public interface IStoryDataProvider
     {
-        Task<Story> GetByIdAsync(int id);
-        Task<List<int>> GetNewStoriesAsync();
+        Task<Story> GetOneStoryByIdAsync(int id);
+        Task<List<int>> GetAllStoriesIdsAsync();
         Task<List<StoryTitle>> GetOnePageStoriesAsync(int page, int pageSize);
-        Task<List<StoryTitle>> GetOnePageFullSearchStoriesAsync(string searchText);
+        Task<List<StoryTitle>> GetStoriesFullSearchAsync(string searchText);
         Task<int> GetStoriesCountAsync();
     }
 }

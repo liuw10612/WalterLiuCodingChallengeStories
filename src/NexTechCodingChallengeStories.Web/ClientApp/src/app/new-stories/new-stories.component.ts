@@ -1,8 +1,6 @@
 import { Component, Inject  } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-//import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-//import { switchMap } from 'rxjs/operators'
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-new-stories',
@@ -39,8 +37,9 @@ export class NewStoriesDataComponent  {
       });
 
   }
-  // setup 1st page
+  // load one page
   public loadOnePage(currentPage: number) {
+    this.searchText = "";   // reset filter string
     this.loading = true;
     this.http.get<StroyTitle[]>(`${this.baseUrl}codechallenge/onePage?p=${currentPage}&ps=${this.perPage}`)
       .subscribe(result => {
@@ -50,7 +49,6 @@ export class NewStoriesDataComponent  {
         this.loading = false;
         console.error(error);
       });
-
   }
   public onPageChange(event: Event) {
     const currentPage = event;
@@ -66,7 +64,7 @@ export class NewStoriesDataComponent  {
       this.loadOnePage(this.page);
     };
   }
-
+  // search all available stories by searchText
   public fullSearch() {
     if (this.searchText.trim()=="") {
       alert("Please write someing on the search box");
@@ -85,10 +83,8 @@ export class NewStoriesDataComponent  {
           console.error(error);
         });
     }
+  }
  }
-
- }
-
 interface StroyTitle {
   id: string;
   time: Date;

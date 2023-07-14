@@ -25,7 +25,7 @@ namespace NexTechCodingChallengeStories.Web.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            var newStories = _storyDataProvider.GetNewStoriesAsync();
+            var newStories = _storyDataProvider.GetAllStoriesIdsAsync();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
@@ -61,7 +61,7 @@ namespace NexTechCodingChallengeStories.Web.Controllers
         {
             try
             {
-                var stories = await _storyDataProvider.GetOnePageFullSearchStoriesAsync(searchText);
+                var stories = await _storyDataProvider.GetStoriesFullSearchAsync(searchText);
                 if (stories.Count > 0)
                     return Ok(stories.OrderByDescending(x => x.Time));
                 else
