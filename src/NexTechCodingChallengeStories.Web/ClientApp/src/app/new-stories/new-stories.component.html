@@ -10,6 +10,7 @@
       </div> {{perPage}} per page
     </div>
   </nav>
+
   <nav class="col-5 col-md-3 mt-2 pr-0 d-flex justify-content-end">
     <ngb-pagination (pageChange)="onPageChange($any($event))" [disabled]="loading" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="true" [pageSize]="perPage" [ellipses]="false" [boundaryLinks]="true" size="sm">
       <ng-template ngbPaginationFirst><i><<</i></ng-template>
@@ -18,11 +19,13 @@
       <ng-template ngbPaginationLast>>></ng-template>
     </ngb-pagination>
   </nav>
+
   <nav class="col-5 col-md-1 mt-2 ">
     <button class="btn btn-default" style="width:100%" [disabled]="loading">
       <fa-icon *ngIf="loading" class="spinclass" icon="spinner" [spin]="true" size="2x"></fa-icon>
     </button>
   </nav>
+
   <nav class="col-5 col-md-5 mt-2 ">
     <div class="form-group" style="text-align: right">
       <div class="input-group">
