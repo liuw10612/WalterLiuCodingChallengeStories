@@ -1,4 +1,4 @@
-﻿using NexTechCodingChallengeStories.Web.Services.Entities;
+﻿using NexTechCodingChallengeStories.Web.Services.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NexTechCodingChallengeStories.Web.Services.DataServices;
-using NexTechCodingChallengeStories.Web.Services.Entities;
+using NexTechCodingChallengeStories.Web.Services.Model;
 using NexTechCodingChallengeStories.Web.Services.Test.Fixtures;
 
 namespace NexTechCodingChallengeStories.Web.Services.Test.Services

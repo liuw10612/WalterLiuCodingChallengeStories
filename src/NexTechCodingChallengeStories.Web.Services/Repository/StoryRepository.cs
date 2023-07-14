@@ -1,4 +1,4 @@
-﻿using NexTechCodingChallengeStories.Web.Services.Entities;
+﻿using NexTechCodingChallengeStories.Web.Services.Model;
 using NexTechCodingChallengeStories.Web.Services.Interfaces;
 using NexTechCodingChallengeStories.Web.Services.DataServices;
 using System;
@@ -60,8 +60,8 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
             }
             catch (DataSeviceException e)
             {
-                _logger.LogError(e, "Http Error while GetNewStoriesAsync()");
-                return null;
+                _logger.LogError(e, "DataSeviceException : Http Error while GetNewStoriesAsync()");
+                throw;
             }
             catch (Exception e)
             {
@@ -99,16 +99,9 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
 
                         if (story != null )
                         {
-                            if (Uri.IsWellFormedUriString(story.url, UriKind.RelativeOrAbsolute))
+                            if (Uri.IsWellFormedUriString(story.Url, UriKind.RelativeOrAbsolute)) // ignore bad URL ones
                             {
-                                // ignore bad URL ones)
-                                stories.Add(new StoryTitle
-                                {
-                                    id = story.id,
-                                    time = story.time,
-                                    title = story.title,
-                                    url = story.url,
-                                });
+                                stories.Add(new StoryTitle(story));
                             }
                             else // remove this bad one from the list, so it will not be checked
                             {
@@ -124,8 +117,8 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
             }
             catch (DataSeviceException e)
             {
-                _logger.LogError(e, "Http Error while GetOnePageStoriesAsync()");
-                return null;
+                _logger.LogError(e, "DataSeviceException : Http Error while GetOnePageStoriesAsync()");
+                throw;
             }
             catch (Exception e)
             {
@@ -133,7 +126,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
                 throw;
             }
         }
-        public async Task<List<StoryTitle>> GetOnePageFullSearchStoriesAsync(string searchText)
+        public async Task<List<StoryTitle>?> GetOnePageFullSearchStoriesAsync(string searchText)
         {
             try
             {
@@ -155,16 +148,9 @@ namespace NexTechCodingChallengeStories.Web.Services.Repository
 
                     if (story != null)
                     {
-                        if (Uri.IsWellFormedUriString(story.url, UriKind.RelativeOrAbsolute)) {  // ignore bad URL ones)
-                            if (story.title.ToLower().Contains(searchText.ToLower())) {
-                                stories.Add(new StoryTitle
-                                {
-                                    id = story.id,
-                                    time = story.time,
-                                    title = story.title,
-                                    url = story.url,
-                                });
-                            }
+                        if (Uri.IsWellFormedUriString(story.Url, UriKind.RelativeOrAbsolute)) {  // ignore bad URL ones)
+                            if (story.Title.ToLower().Contains(searchText.ToLower()))
+                                stories.Add(new StoryTitle(story));
                         }
                         else // remove this bad URL one from the Id list, so it will not be checked next time
                         {

@@ -1,6 +1,6 @@
 ﻿using NexTechCodingChallengeStories.Web.Services.CacheService;
 using NexTechCodingChallengeStories.Web.Services.DataServices;
-using NexTechCodingChallengeStories.Web.Services.Entities;
+using NexTechCodingChallengeStories.Web.Services.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
