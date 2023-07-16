@@ -1,13 +1,13 @@
 <div class="row  ">
   <nav class="col-5 col-md-3 mt-2">
     <div ngbDropdown class="d-inline-block" [autoClose]="'inside'">
-      <button class="btn btn-primary  btn-xs mr-1" id="dropdownBasic1" [disabled]="loading" ngbDropdownToggle>Page Size</button>
+      <button class="btn btn-primary  btn-xs mr-1" id="dropdownBasic1" [disabled]="loading" ngbTooltip="Page 1 cached" ngbDropdownToggle>Page Size</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button ngbDropdownItem (click)="onPageSizeChange(10)">10</button>
         <button ngbDropdownItem (click)="onPageSizeChange(20)">20</button>
         <button ngbDropdownItem (click)="onPageSizeChange(40)">40</button>
         <button ngbDropdownItem (click)="onPageSizeChange(100)">100</button>
-      </div> {{perPage}} per page
+      </div> {{perPage}} &nbsp; <em>per page</em>
     </div>
   </nav>
 
@@ -48,7 +48,7 @@
   <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stories1">
     <thead>
       <tr>
-        <th><h1> Hacker News Stories </h1></th>
+        <th id="t2"><h1> Hacker News Stories</h1></th>
       </tr>
     </thead>
     <tbody>

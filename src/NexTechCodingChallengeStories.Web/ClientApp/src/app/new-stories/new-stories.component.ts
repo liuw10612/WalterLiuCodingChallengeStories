@@ -54,6 +54,7 @@ export class NewStoriesDataComponent  {
     this.searchText = "";   // reset filter string
     this.loading = true;
     let url = `${this.baseUrl}codechallenge/onePage?p=${currentPage}&ps=${this.perPage}`;
+    this.storyErrors$.next(``);
     this.stories$ = this.http.get<StroyTitle[]>(url, {})
       .pipe(
         map(v => {
@@ -103,6 +104,7 @@ export class NewStoriesDataComponent  {
       this.loading = true;
       let url = `${this.baseUrl}codechallenge/onePageFullSearch?s=${this.searchText}`;
       this.logMessage(`Full search stories is working hard ...`);
+      this.storyErrors$.next(`Full search stories is working hard ...`);
       this.stories$ = this.http.get<StroyTitle[]>(url, {})
         .pipe(
           map(v => {

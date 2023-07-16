@@ -20,10 +20,10 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Services
             // Act
             var testData = StoriesFixture.GetTestStories();
             sut.SetCachedDataOnePage(testData);
-            var result = sut.GetCachedStoresOnePage(1, 10);
+            var expectedResult = sut.GetCachedStoresOnePage(1, 10);
 
             // Assert
-            Assert.Equal(result.Count, testData.Count);
+            Assert.Equal(testData.Count, expectedResult!.Count);
         }
 
         [Fact]
@@ -39,8 +39,8 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Services
             var result2 = sut.GetCachedStoresOnePage(1, 20);        // wrong page size
 
             // Assert
-            Assert.Equal(result1, null);
-            Assert.Equal(result2, null);
+            Assert.Equal(null, result1);
+            Assert.Equal(null, result2);
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Services
             var result = sut.GetCachedStoresAllIds();
 
             // Assert
-            Assert.Equal(result.Count, testDataAllIds.Count);
+            Assert.Equal(testDataAllIds.Count, result.Count);
         }
         [Fact]
         public void Get_On_Zero_GetCachedStoresAllIds()
@@ -67,7 +67,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Test.Services
             var result = sut.GetCachedStoresAllIds();
 
             // Assert
-            Assert.Equal(result.Count, 0);
+            Assert.Equal(0, result.Count);
         }
     }
 }

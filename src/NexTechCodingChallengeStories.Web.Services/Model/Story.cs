@@ -8,46 +8,40 @@ namespace NexTechCodingChallengeStories.Web.Services.Model
     public class Story 
     {
         public int Id { get; set; }
-
         public bool Deleted { get; set; }
-
         public string Type { get; set; } = default!;
-
         public string By { get; set; } = default!;
-
         public decimal Time { get; set; }
-
         public string Text { get; set; } = default!;
-
         public bool Dead { get; set; }
-
         public int Parent { get; set; }
-
         public int Poll { get; set; }
-
         public int[] Kids { get; set; } = new int[0];
-
         public string Url { get; set; } = default!;
-
         public int Score { get; set; }
-
         public string Title { get; set; } = default!;
-
         public int[] Parts { get; set; } = new int[0];
-
         public int Descendants { get; set; }
-
     }
     public class StoryTitle  
     {
-        public StoryTitle(Story story)
+        public StoryTitle()
+        {
+        }
+            public StoryTitle(Story story)
         {
             Id = story.Id;
             Time = story.Time;
             Title = story.Title;
             Url = story.Url;
         }
-
+        public StoryTitle(int id, decimal time, string title, string url)
+        {
+            Id = id;
+            Time = time;
+            Title = title;
+            Url = url;
+        }
         [JsonProperty("id")]
         public int Id { get; set; }
         [JsonProperty("time")]

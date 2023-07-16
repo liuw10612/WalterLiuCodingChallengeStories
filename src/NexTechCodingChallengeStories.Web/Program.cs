@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NexTechCodingChallengeStories.Web.Services.CacheService;
-using NexTechCodingChallengeStories.Web.Services.HttpService;
+using NexTechCodingChallengeStories.Web.Services.HttpServices;
 using NexTechCodingChallengeStories.Web.Services.StoryContracts;
 using System.Net.Mail;
 

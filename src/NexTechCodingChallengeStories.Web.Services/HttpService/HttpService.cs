@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using NexTechCodingChallengeStories.Web.Services.Model;
 
 
-namespace NexTechCodingChallengeStories.Web.Services.HttpService
+namespace NexTechCodingChallengeStories.Web.Services.HttpServices
 {
     public class HttpService : IHttpService
     {
@@ -36,7 +36,7 @@ namespace NexTechCodingChallengeStories.Web.Services.HttpService
                     return JsonConvert.DeserializeObject<T>(responseJson);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 // log and send notification
                 throw new HttpSeviceException("Internal server error : HttpGetOneStory()");
