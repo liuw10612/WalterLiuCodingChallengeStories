@@ -1,15 +1,8 @@
-.topnav {
-    background:#FFF;
-    border-bottom:solid 1px #DDD;
-}
-.navbar-brand {
-    padding:0;
-    margin:0;
+.link-active {
+  text-decoration: underline;
 }
 .navbar-nav > li {
   padding-left: 38px;
-  text-decoration: underline;
-  text-decoration-color: blue;
+  color: blue;
   font-size: 25px;
 }
-

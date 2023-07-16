@@ -1,7 +1,7 @@
 <div class="row  ">
   <nav class="col-5 col-md-3 mt-2">
     <div ngbDropdown class="d-inline-block" [autoClose]="'inside'">
-      <button class="btn btn-primary  btn-xs mr-1" id="dropdownBasic1" [disabled]="loading" ngbTooltip="Page 1 cached" ngbDropdownToggle>Page Size</button>
+      <button class="btn btn-primary  btn-xs mr-1" id="dropdownBasic1" [disabled]="loading" ngbTooltip="Page 1 cached" [disableTooltip]="perPage != 10" ngbDropdownToggle>Page Size</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button ngbDropdownItem (click)="onPageSizeChange(10)">10</button>
         <button ngbDropdownItem (click)="onPageSizeChange(20)">20</button>
@@ -32,7 +32,7 @@
         <input type="text" [(ngModel)]="searchText" class="form-control" placeholder="Search" [disabled]="loading" />
 
         <span class="input-group-btn">
-          <button class="btn btn-outline-info" [disabled]="loading" (click)="fullSearch()"  ngbTooltip="This is a slow one">
+          <button class="btn btn-outline-info" [disabled]="loading" (click)="fullSearch()"  ngbTooltip="This is a slow one" [disableTooltip]="searchText.trim()==''">
             <fa-icon icon="search"></fa-icon>
             Full Search
           </button>
