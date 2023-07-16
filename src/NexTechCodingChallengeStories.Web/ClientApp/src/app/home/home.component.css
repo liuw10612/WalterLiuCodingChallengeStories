@@ -1,24 +1,18 @@
 section {
+  border-radius: 10px;
   border: 1px solid black;
   padding: 4px;
   margin-bottom: 8px;
 }
-.pragraph1 {
+.pragraph-light-grey {
   margin: 1px;
-  background-color: rgb(230, 230, 217);
+  background-color: rgb(208,208,208);
   font-family: arial, sans-serif;
   font-size: 16px;
 }
-.pragraph2 {
+.pragraph-white-smoke {
   margin: 1px;
-  background-color: rgb(230, 230, 217);
-  font-family: arial, sans-serif;
-  font-size: 16px;
-}
-
-.pragraph3 {
-  margin: 1px;
-  background-color: rgb(243, 243, 231);
+  background-color: rgb(245,245,245);
   font-family: arial, sans-serif;
   font-size: 16px;
 }

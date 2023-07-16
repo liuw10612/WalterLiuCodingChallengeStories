@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NexTechCodingChallengeStories.Web.Services.HttpService
+namespace NexTechCodingChallengeStories.Web.Services.HttpServices
 {
     public class HttpSeviceException : Exception
     {

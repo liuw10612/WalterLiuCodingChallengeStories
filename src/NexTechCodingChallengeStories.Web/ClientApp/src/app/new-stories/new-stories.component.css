@@ -5,6 +5,11 @@
   color: hotpink;
 }
 
+#t2 {
+  -moz-tab-size: 16; /* Firefox */
+  tab-size: 16;
+}
+
 li.page-item.disabled {
   display: none;
 }

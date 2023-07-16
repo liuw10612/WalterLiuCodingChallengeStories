@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NexTechCodingChallengeStories.Web.Services.HttpService
+namespace NexTechCodingChallengeStories.Web.Services.HttpServices
 {
     public interface IHttpService
     {

@@ -1,5 +1,5 @@
 ﻿using NexTechCodingChallengeStories.Web.Services.Model;
-using NexTechCodingChallengeStories.Web.Services.HttpService;
+using NexTechCodingChallengeStories.Web.Services.HttpServices;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,15 +14,15 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
     {
         private const string _baseUrl = "https://hacker-news.firebaseio.com";
         ILogger<StoryDataProvider> _logger;
-        private IHttpService _dataService;
+        private IHttpService _httpService;
         private ICachedData _cachedDataService;
 
         public StoryDataProvider() { }
 
-        public StoryDataProvider(ILogger<StoryDataProvider> logger, IHttpService dataService, ICachedData cachedDataService)
+        public StoryDataProvider(ILogger<StoryDataProvider> logger, IHttpService httpService, ICachedData cachedDataService)
         {
             _logger = logger;
-            _dataService = dataService;
+            _httpService = httpService;
             _cachedDataService = cachedDataService;
         }
 
@@ -31,7 +31,7 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
             try
             {
                 string url = _baseUrl + $"/v0/item/{id}.json?print=pretty";
-                var item = await _dataService.HttpGetGeneric<Story>(url);
+                var item = await _httpService.HttpGetGeneric<Story>(url);
                 return item;
             }   
             catch (Exception e)
@@ -46,7 +46,7 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
             try
             { 
                 string url = _baseUrl + $"/v0/newstories.json?print=pretty";
-                var newStories = await _dataService.HttpGetGeneric<List<int>>(url);
+                var newStories = await _httpService.HttpGetGeneric<List<int>>(url);
                 return newStories;
             }
             catch (HttpSeviceException e)
@@ -166,7 +166,7 @@ namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
             {
                 string url = _baseUrl +  $"/v0/newstories.json?print=pretty";
 
-                var newStories = await _dataService.HttpGetGeneric<List<int>>(url);
+                var newStories = await _httpService.HttpGetGeneric<List<int>>(url);
                 if (newStories !=null && newStories.Count > 0)
                 {
                     _cachedDataService.SetCachedDataAllIds(newStories); // save for cache

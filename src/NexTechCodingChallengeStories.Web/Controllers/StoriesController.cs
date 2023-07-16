@@ -11,30 +11,11 @@ namespace NexTechCodingChallengeStories.Web.Controllers
         private readonly ILogger<StoriesController> _logger;
         private IStoryDataProvider _storyDataProvider;
 
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         public StoriesController(ILogger<StoriesController> logger, StoryDataProvider storyDataProvider)
         {
             _logger = logger;
             _storyDataProvider = storyDataProvider;
         }
-
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            var newStories = _storyDataProvider.GetAllStoriesIdsAsync();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }
- 
 
         [HttpGet("onePage")]
         public async Task<IActionResult> OnePage(

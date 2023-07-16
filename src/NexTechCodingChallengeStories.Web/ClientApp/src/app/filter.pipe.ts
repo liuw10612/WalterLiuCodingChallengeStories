@@ -9,11 +9,11 @@ export class FilterPipe implements PipeTransform {
     return array.filter(item => {
       for (let property of properties) {
         if (!!item[property] && item[property].toString().toLowerCase().includes(searchText.toLowerCase())) {
-          console.log('Filtered');
+          //console.log('Filtered');
           return true;
         }
       }
-      console.log('Not Filtered');
+      //console.log('Not Filtered');
       return false;
     });
   }
