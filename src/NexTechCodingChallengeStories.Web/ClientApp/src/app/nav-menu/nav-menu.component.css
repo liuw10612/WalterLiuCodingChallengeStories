@@ -1,18 +1,15 @@
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+.topnav {
+    background:#FFF;
+    border-bottom:solid 1px #DDD;
+}
+.navbar-brand {
+    padding:0;
+    margin:0;
+}
+.navbar-nav > li {
+  padding-left: 38px;
+  text-decoration: underline;
+  text-decoration-color: blue;
+  font-size: 25px;
 }
 
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}

@@ -32,7 +32,7 @@
         <input type="text" [(ngModel)]="searchText" class="form-control" placeholder="Search" [disabled]="loading" />
 
         <span class="input-group-btn">
-          <button class="btn btn-outline-info" [disabled]="loading" (click)="fullSearch()">
+          <button class="btn btn-outline-info" [disabled]="loading" (click)="fullSearch()"  ngbTooltip="This is a slow one">
             <fa-icon icon="search"></fa-icon>
             Full Search
           </button>
