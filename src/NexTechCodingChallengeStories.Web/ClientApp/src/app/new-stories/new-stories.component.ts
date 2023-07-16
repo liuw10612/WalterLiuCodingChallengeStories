@@ -41,6 +41,8 @@ export class NewStoriesDataComponent  {
             this.loadOnePage(1);
           },
           error: (err: any) => {
+            this.collectionSize = 0;
+            this.calculateTotalPages = 0;
             this.logMessage(`no story count data returned`);
           },
           complete: () => {

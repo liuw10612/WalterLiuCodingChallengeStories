@@ -28,4 +28,7 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // test observables
+  //https://ng-mocks.sudo.eu/extra/mock-observables/#:~:text=A%20mock%20observable%20in%20Angular,defaultMock%20.
+  
 });
