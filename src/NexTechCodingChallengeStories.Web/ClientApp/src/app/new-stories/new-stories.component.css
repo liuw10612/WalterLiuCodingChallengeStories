@@ -5,11 +5,12 @@
   color: hotpink;
 }
 
-#t2 {
-  -moz-tab-size: 16; /* Firefox */
-  tab-size: 16;
+span button:hover {
+  background-color: darkorange;
+  color:white;
+  transition: 0.7s;
 }
-
+ 
 li.page-item.disabled {
   display: none;
 }

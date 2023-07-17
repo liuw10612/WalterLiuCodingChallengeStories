@@ -5,6 +5,7 @@ section {
   margin-bottom: 8px;
 }
 .pragraph-light-grey {
+  border-radius: 10px;
   margin: 1px;
   background-color: rgb(208,208,208);
   font-family: arial, sans-serif;
@@ -17,7 +18,21 @@ section {
   font-size: 16px;
 }
 
-.titleclass {
-  color: blue;
+.smileclass{
+  color:orange
 }
 
+.titleclass {
+  font-family: Monotype Corsiva;
+  color: blue;
+  font-size: 68px
+}
+.walterclass {
+  font-family: cursive;
+  color: darkblue;
+  font-size: 54px
+}
+.githubclass {
+  color: skyblue;
+  font-size: 16px
+}
