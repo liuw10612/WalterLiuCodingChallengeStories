@@ -35,18 +35,20 @@ describe('NewStoriesDataComponent', () => {
 
   // test page size
   it('should start with page size 10, then 20 when clicked(20)', () => {
-    const countElement = fixture.nativeElement.querySelector('b');
-    expect(countElement.textContent).toEqual('10');
+    const pageSizeElement = fixture.nativeElement.querySelector('b');
+    expect(pageSizeElement.textContent).toEqual('10');
 
     const page20Button = fixture.nativeElement.querySelector('button[name="page20"]');
     page20Button.click();
     fixture.detectChanges();
-    console.log(countElement.textContent);
-    expect(countElement.textContent).toEqual('20');
+    console.log(pageSizeElement.textContent);
+    expect(pageSizeElement.textContent).toEqual('20');
   });
 
+
+  // test ngb-pagination, need to mock it 1st
   
-  // test observables
+  // test observables, need a service 1st
   //https://ng-mocks.sudo.eu/extra/mock-observables/#:~:text=A%20mock%20observable%20in%20Angular,defaultMock%20.
   
 });
