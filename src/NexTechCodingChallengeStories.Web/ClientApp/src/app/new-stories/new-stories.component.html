@@ -3,11 +3,11 @@
     <div ngbDropdown class="d-inline-block" [autoClose]="'inside'">
       <button class="btn btn-primary  btn-xs mr-1" id="dropdownBasic1" [disabled]="loading" ngbTooltip="Page 1 cached" [disableTooltip]="perPage != 10" ngbDropdownToggle>Page Size</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button ngbDropdownItem (click)="onPageSizeChange(10)">10</button>
-        <button ngbDropdownItem (click)="onPageSizeChange(20)">20</button>
-        <button ngbDropdownItem (click)="onPageSizeChange(40)">40</button>
-        <button ngbDropdownItem (click)="onPageSizeChange(100)">100</button>
-      </div> {{perPage}} &nbsp; <em>per page</em>
+        <button name="page10" ngbDropdownItem (click)="onPageSizeChange(10)">10</button>
+        <button name="page20" ngbDropdownItem (click)="onPageSizeChange(20)">20</button>
+        <button name="page20" ngbDropdownItem (click)="onPageSizeChange(40)">40</button>
+        <button name="page20" ngbDropdownItem (click)="onPageSizeChange(100)">100</button>
+      </div> <b>{{perPage}}</b> &nbsp; <em>per page</em>
     </div>
   </nav>
 

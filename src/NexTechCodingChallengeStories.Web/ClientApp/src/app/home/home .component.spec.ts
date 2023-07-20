@@ -19,12 +19,12 @@ describe("HomeComponent", () => {
   });
   it(`should have title Walter Liu`, () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Walter Liu');
+    expect(compiled.querySelector('.walterclass')?.textContent).toContain('Walter Liu');
   });
 
   it("should contain Hacker News API link", () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    let el = compiled.querySelector('a[href]')?.attributes.getNamedItem("href");
+    let el = compiled.querySelector('p a[href]')?.attributes.getNamedItem("href");
     expect(el?.textContent).toEqual('https://github.com/HackerNews/API');
   });
 });
