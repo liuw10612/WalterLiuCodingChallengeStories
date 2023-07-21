@@ -42,17 +42,15 @@ describe("Router: App", () => {
 
   it('navigate to "" redirects you to /home', fakeAsync(() => {
     router.navigate([""]).then(() => {
-      console.log('before home');
-      console.log(location.path());
+      //console.log(location.path());
       expect(location.path()).toBe("/");
     });
   }));
 
   it('navigate to "new-stories" takes you to /new-stories', fakeAsync(() => {
-    console.log(router);
+    //console.log(router);
     router.navigate(["/new-stories"]).then(() => {
-      console.log('before new story');
-      console.log(location.path());
+      //console.log(location.path());
       expect(location.path()).toBe("/new-stories");
     });
   }));

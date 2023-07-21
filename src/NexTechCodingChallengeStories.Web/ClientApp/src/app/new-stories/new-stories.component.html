@@ -48,11 +48,17 @@
   <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="stories1">
     <thead>
       <tr>
-        <th id="t2"><h1> Hacker News Stories</h1></th>
+        <th>
+          <button class="btn btn-link" (click)="setSort('title')">
+            <h1> Hacker News Stories</h1>
+            <fa-icon [icon]="ascending ? 'sort-amount-down':'sort-amount-up'" *ngIf="sortColumn === 'title'"></fa-icon>
+          </button>
+        </th>
       </tr>
+
     </thead>
     <tbody>
-      <tr *ngFor="let story of stories1 | filter : searchText : ['title']">
+      <tr *ngFor="let story of stories1 | filter : searchText : ['title'] | sort : [sortColumn, ascending]">
         <td>
           <a href="{{story.url}}"> {{ story.title }} </a>
         </td>
