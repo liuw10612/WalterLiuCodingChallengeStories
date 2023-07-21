@@ -1,54 +1,64 @@
-import { TestBed,  ComponentFixture, } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { NewStoriesDataComponent } from './new-stories.component';
-import * as Rx from 'rxjs';
-import { delay } from "rxjs/operators";
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { of } from 'rxjs';
 
+import { NewStoriesDataComponent, StoryTile } from './new-stories.component';
+import { HttpDataService } from '../services/httpData.service';
+
+class MockHttpDataService implements Partial<HttpDataService> {
+  responseMockObservable = [{
+    id: '1',
+    time: new Date(),
+    title: 'Title1',
+    url: '/data'
+  }];
+  getNewStoriesCount$() {
+    return of(123);
+  }
+  loadOnePage$(currentPage: number, pageSize: number) {
+    return of(this.responseMockObservable);
+  }
+  fullSearch$(searchText: string) {
+    return of(this.responseMockObservable);
+  }
+}
 
 describe('NewStoriesDataComponent', () => {
+  let responseStories: StoryTile[];
+
+  let component: NewStoriesDataComponent;
   let fixture: ComponentFixture<NewStoriesDataComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        HttpClientTestingModule
-      ],
-      declarations: [
-        NewStoriesDataComponent 
-      ],
-      providers: [
-        { provide: 'BASE_URL', useValue: "/data" }
-      ]
+      declarations: [NewStoriesDataComponent],
+      providers: [{ provide: HttpDataService, useClass: MockHttpDataService }],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
-    fixture = TestBed.createComponent(NewStoriesDataComponent);
-    fixture.detectChanges();
   });
-  
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(NewStoriesDataComponent);
-    const component = fixture.debugElement.componentInstance;
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NewStoriesDataComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('should create NewStoriesDataComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // test page size
-  it('should start with page size 10, then 20 when clicked(20)', () => {
-    const pageSizeElement = fixture.nativeElement.querySelector('b');
-    expect(pageSizeElement.textContent).toEqual('10');
-
-    const page20Button = fixture.nativeElement.querySelector('button[name="page20"]');
-    page20Button.click();
-    fixture.detectChanges();
-    console.log(pageSizeElement.textContent);
-    expect(pageSizeElement.textContent).toEqual('20');
+  it('Should get total story count from observable', () => {
+    let httpDataService = TestBed.inject<HttpDataService>(HttpDataService);
+    spyOn(httpDataService, 'getNewStoriesCount$').and.callThrough();
+    expect(component.collectionSize).toBe(123);
   });
 
+  it('Should get 1 story for loadOnePage$ from observable', () => {
+    let httpDataService = TestBed.inject<HttpDataService>(HttpDataService);
+      spyOn(httpDataService, 'loadOnePage$').withArgs(1, 10).and.callThrough();
+      component.stories$?.subscribe(result => {
+      responseStories = result;
+    });
+    expect(responseStories[0].id).toBe('1');
 
-  // test ngb-pagination, need to mock it 1st
-  
-  // test observables, need a service 1st
-  //https://ng-mocks.sudo.eu/extra/mock-observables/#:~:text=A%20mock%20observable%20in%20Angular,defaultMock%20.
-  
+  });
 });

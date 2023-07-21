@@ -2,6 +2,7 @@ import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, BehaviorSubject, of } from 'rxjs';
 import { catchError, map, finalize } from 'rxjs/operators';
+import { HttpDataService } from '../services/httpData.service';
 
 @Component({
   selector: 'app-new-stories',
@@ -15,6 +16,9 @@ export class NewStoriesDataComponent  {
   perPage = 10;
   calculateTotalPages = this.collectionSize / this.perPage;
 
+  public sortColumn: string = 'name';
+  public ascending: boolean = true;
+
   public displayLog: boolean = false;
   public loading: boolean = false;
   public searchText: string = '';
@@ -23,17 +27,27 @@ export class NewStoriesDataComponent  {
   storyErrors$ = new BehaviorSubject<string>("");
   logEntries: LogEntry[] = [];
 
-  constructor(  private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-    this.getNewStoriesCount();
+  // sort column
+  public setSort(column: string) {
+    if (this.sortColumn === column) {
+      this.sortColumn = column;
+      this.ascending = !this.ascending;
+    } else {
+      this.sortColumn = column;
+      this.ascending = true;
+    }
   }
 
+  constructor(private httpDataService: HttpDataService) { 
+    this.getNewStoriesCount();
+  }
 
   // get total stories count
   public getNewStoriesCount() {
     this.loading = true;
-    this.http.get<number>(this.baseUrl + `codechallenge/storiesCount`)
+    this.httpDataService.getNewStoriesCount$()
       .subscribe(
-       {
+        {
           next: (result) => {
             this.loading = false;
             this.collectionSize = result;
@@ -48,16 +62,15 @@ export class NewStoriesDataComponent  {
           complete: () => {
             this.logMessage(`Get stories count completed successfully : ${this.collectionSize}`);
           }
-    });
+        });
   }
-
+    
   // load one page
   public loadOnePage(currentPage: number) {
     this.searchText = "";   // reset filter string
     this.loading = true;
-    let url = `${this.baseUrl}codechallenge/onePage?p=${currentPage}&ps=${this.perPage}`;
     this.storyErrors$.next(``);
-    this.stories$ = this.http.get<StroyTitle[]>(url, {})
+    this.stories$ = this.httpDataService.loadOnePage$(currentPage, this.perPage)
       .pipe(
         map(v => {
           if (v) {
@@ -73,15 +86,14 @@ export class NewStoriesDataComponent  {
           this.logMessage(`Error loading story data` + error.error);
           this.storyErrors$.next(error.error);
           return of()
-         }),
+        }),
         finalize(() => this.loading = false)
       );
   }
-
   public onPageChange(event: Event) {
     const currentPage = event;
     if (+currentPage != this.page) {
-      console.log(currentPage + "- real page =" + this.page);
+      //console.log(currentPage + "- real page =" + this.page);
       this.loadOnePage(+currentPage);
     }
   }
@@ -104,10 +116,9 @@ export class NewStoriesDataComponent  {
       this.perPage = 100; // make size big enough for holding all the full searchs result
       this.page = 1;
       this.loading = true;
-      let url = `${this.baseUrl}codechallenge/onePageFullSearch?s=${this.searchText}`;
       this.logMessage(`Full search stories is working hard ...`);
       this.storyErrors$.next(`Full search stories is working hard ...`);
-      this.stories$ = this.http.get<StroyTitle[]>(url, {})
+      this.stories$ = this.httpDataService.fullSearch$(this.searchText)
         .pipe(
           map(v => {
             if (v) {
@@ -138,7 +149,7 @@ export class NewStoriesDataComponent  {
   }
 
  }
-interface StroyTitle {
+export interface StoryTile {
   id: string;
   time: Date;
   title: string;

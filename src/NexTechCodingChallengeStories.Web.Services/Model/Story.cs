@@ -28,7 +28,7 @@ namespace NexTechCodingChallengeStories.Web.Services.Model
         public StoryTitle()
         {
         }
-            public StoryTitle(Story story)
+        public StoryTitle(Story story)
         {
             Id = story.Id;
             Time = story.Time;
