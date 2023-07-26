@@ -1,14 +1,14 @@
-﻿using NexTechCodingChallengeStories.Web.Services.Model;
-using NexTechCodingChallengeStories.Web.Services.HttpServices;
+﻿using CodingChallengeStories.Web.Services.Model;
+using CodingChallengeStories.Web.Services.HttpServices;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using NexTechCodingChallengeStories.Web.Services.CacheService;
+using CodingChallengeStories.Web.Services.CacheService;
 using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
 
-namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
+namespace CodingChallengeStories.Web.Services.DataProvider
 { 
     public class StoryDataProvider : IStoryDataProvider
     {

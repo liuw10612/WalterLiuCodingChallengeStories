@@ -1,4 +1,4 @@
-﻿using NexTechCodingChallengeStories.Web.Services.Model;
+﻿using CodingChallengeStories.Web.Services.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NexTechCodingChallengeStories.Web.Services.Test.Fixtures
+namespace CodingChallengeStories.Web.Services.Test.Fixtures
 {
     public static class StoriesFixture
     {

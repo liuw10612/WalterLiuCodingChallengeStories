@@ -5,10 +5,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using NexTechCodingChallengeStories.Web.Services.Model;
+using CodingChallengeStories.Web.Services.Model;
 
 
-namespace NexTechCodingChallengeStories.Web.Services.HttpServices
+namespace CodingChallengeStories.Web.Services.HttpServices
 {
     public class HttpService : IHttpService
     {

@@ -1,22 +1,19 @@
 <div class="row  ">
   <nav class="col-5 col-md-3 mt-2">
-    <div ngbDropdown class="d-inline-block" [autoClose]="'inside'">
-      <button class="btn btn-primary  btn-xs mr-1" id="dropdownBasic1" [disabled]="loading" ngbTooltip="Page 1 cached" [disableTooltip]="perPage != 10" ngbDropdownToggle>Page Size</button>
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-outline-primary  btn-xs mr-1" id="dropdownBasic1" [disabled]="loading" ngbTooltip="Page 1 cached" [disableTooltip]="perPage != 10" ngbDropdownToggle>Page Size</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button name="page10" ngbDropdownItem (click)="onPageSizeChange(10)">10</button>
         <button name="page20" ngbDropdownItem (click)="onPageSizeChange(20)">20</button>
         <button name="page20" ngbDropdownItem (click)="onPageSizeChange(40)">40</button>
         <button name="page20" ngbDropdownItem (click)="onPageSizeChange(100)">100</button>
-      </div> <b>{{perPage}}</b> &nbsp; <em>per page</em>
+      </div>  &nbsp;<b>{{perPage}}</b> &nbsp; <em>per page</em>
     </div>
   </nav>
 
   <nav class="col-5 col-md-3 mt-2 pr-0 d-flex justify-content-end">
-    <ngb-pagination (pageChange)="onPageChange($any($event))" [disabled]="loading" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="true" [pageSize]="perPage" [ellipses]="false" [boundaryLinks]="true" size="sm">
-      <ng-template ngbPaginationFirst><i><<</i></ng-template>
-      <ng-template ngbPaginationPrevious><</ng-template>
-      <ng-template ngbPaginationNext>></ng-template>
-      <ng-template ngbPaginationLast>>></ng-template>
+    <!--https://ng-bootstrap.github.io/#/components/pagination/examples-->
+    <ngb-pagination (pageChange)="onPageChange($any($event))" [disabled]="loading" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="true" [pageSize]="perPage" [ellipses]="true" [boundaryLinks]="true"  size="sm">
     </ngb-pagination>
   </nav>
 
@@ -54,6 +51,12 @@
             <fa-icon [icon]="ascending ? 'sort-amount-down':'sort-amount-up'" *ngIf="sortColumn === 'title'"></fa-icon>
           </button>
         </th>
+        <th>
+          <button class="btn btn-link" (click)="setSort('time')">
+            <h3> Date Time </h3>
+            <fa-icon [icon]="ascending ? 'sort-amount-down':'sort-amount-up'" *ngIf="sortColumn === 'time'"></fa-icon>
+          </button>
+        </th>
       </tr>
 
     </thead>
@@ -61,6 +64,9 @@
       <tr *ngFor="let story of stories1 | filter : searchText : ['title'] | sort : [sortColumn, ascending]">
         <td>
           <a href="{{story.url}}"> {{ story.title }} </a>
+        </td>
+        <td>
+          {{ story.time | date :'MM-dd-yyyy HH:mm:ss' }}
         </td>
       </tr>
     </tbody>

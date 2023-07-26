@@ -1,10 +1,10 @@
-﻿using NexTechCodingChallengeStories.Web.Services.Model;
+﻿using CodingChallengeStories.Web.Services.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NexTechCodingChallengeStories.Web.Services.CacheService
+namespace CodingChallengeStories.Web.Services.CacheService
 {
     public interface ICachedData
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NexTechCodingChallengeStories.Web.Services.Model;
-using NexTechCodingChallengeStories.Web.Services.StoryContracts;
+using CodingChallengeStories.Web.Services.Model;
+using CodingChallengeStories.Web.Services.DataProvider;
 
-namespace NexTechCodingChallengeStories.Web.Controllers
+namespace CodingChallengeStories.Web.Controllers
 {
     [ApiController]
     [Route("codechallenge")]

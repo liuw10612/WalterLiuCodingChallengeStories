@@ -1,4 +1,4 @@
-The instructions :
+The Code Challenge instructions :
 
 Using the Hacker News API, create a solution that allows users to view the newest stories from the feed.
 
