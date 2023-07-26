@@ -1,6 +1,6 @@
-﻿using NexTechCodingChallengeStories.Web.Services.Model;
+﻿using CodingChallengeStories.Web.Services.Model;
 
-namespace NexTechCodingChallengeStories.Web.Services.StoryContracts
+namespace CodingChallengeStories.Web.Services.DataProvider
 { 
     public interface IStoryDataProvider
     {

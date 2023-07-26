@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NexTechCodingChallengeStories.Web.Services.CacheService;
-using NexTechCodingChallengeStories.Web.Services.HttpServices;
-using NexTechCodingChallengeStories.Web.Services.StoryContracts;
+using CodingChallengeStories.Web.Services.CacheService;
+using CodingChallengeStories.Web.Services.HttpServices;
+using CodingChallengeStories.Web.Services.DataProvider;
 using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);

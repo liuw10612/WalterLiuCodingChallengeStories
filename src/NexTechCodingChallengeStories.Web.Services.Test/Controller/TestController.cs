@@ -2,19 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using NexTechCodingChallengeStories.Web.Controllers;
-using NexTechCodingChallengeStories.Web.Services.CacheService;
-using NexTechCodingChallengeStories.Web.Services.HttpServices;
-using NexTechCodingChallengeStories.Web.Services.Model;
-using NexTechCodingChallengeStories.Web.Services.StoryContracts;
-using NexTechCodingChallengeStories.Web.Services.Test.Fixtures;
+using CodingChallengeStories.Web.Controllers;
+using CodingChallengeStories.Web.Services.CacheService;
+using CodingChallengeStories.Web.Services.HttpServices;
+using CodingChallengeStories.Web.Services.Model;
+using CodingChallengeStories.Web.Services.DataProvider;
+using CodingChallengeStories.Web.Services.Test.Fixtures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NexTechCodingChallengeStories.Web.Services.Test.Controller
+namespace CodingChallengeStories.Web.Services.Test.Controller
 {
     public  class TestController
     {

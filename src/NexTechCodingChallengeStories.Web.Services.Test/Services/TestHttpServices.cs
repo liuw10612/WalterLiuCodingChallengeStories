@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NexTechCodingChallengeStories.Web.Services.HttpServices;
-using NexTechCodingChallengeStories.Web.Services.Model;
-using NexTechCodingChallengeStories.Web.Services.Test.Fixtures;
+using CodingChallengeStories.Web.Services.HttpServices;
+using CodingChallengeStories.Web.Services.Model;
+using CodingChallengeStories.Web.Services.Test.Fixtures;
 
-namespace NexTechCodingChallengeStories.Web.Services.Test.Services
+namespace CodingChallengeStories.Web.Services.Test.Services
 {
     public class TestHttpService
     {

@@ -1,6 +1,6 @@
 ﻿using Moq;
-using NexTechCodingChallengeStories.Web.Services.CacheService;
-using NexTechCodingChallengeStories.Web.Services.Test.Fixtures;
+using CodingChallengeStories.Web.Services.CacheService;
+using CodingChallengeStories.Web.Services.Test.Fixtures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NexTechCodingChallengeStories.Web.Services.Test.Services
+namespace CodingChallengeStories.Web.Services.Test.Services
 {
     public class TestCacheService
     {

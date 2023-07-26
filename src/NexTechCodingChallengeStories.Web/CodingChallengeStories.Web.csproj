@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NexTechCodingChallengeStories.Web.Services\NexTechCodingChallengeStories.Web.Services.csproj" />
+    <ProjectReference Include="..\NexTechCodingChallengeStories.Web.Services\CodingChallengeStories.Web.Services.csproj" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace NexTechCodingChallengeStories.Web.Services.Model
+namespace CodingChallengeStories.Web.Services.Model
 {
     public class Story 
     {
@@ -31,25 +31,31 @@ namespace NexTechCodingChallengeStories.Web.Services.Model
         public StoryTitle(Story story)
         {
             Id = story.Id;
-            Time = story.Time;
+            Time = UnixTimestampToDateTime((double)story.Time);
             Title = story.Title;
             Url = story.Url;
         }
         public StoryTitle(int id, decimal time, string title, string url)
         {
             Id = id;
-            Time = time;
+            Time = UnixTimestampToDateTime((double)time);
             Title = title;
             Url = url;
         }
         [JsonProperty("id")]
         public int Id { get; set; }
         [JsonProperty("time")]
-        public decimal Time { get; set; }
+        public DateTime Time { get; set; }
         [JsonProperty("title")]
         public string Title { get; set; }
         [JsonProperty("url")]
         public string Url { get; set; }
 
+        private DateTime UnixTimestampToDateTime(double unixTime)
+        {
+            DateTime unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            long unixTimeStampInTicks = (long)(unixTime * TimeSpan.TicksPerSecond);
+            return new DateTime(unixStart.Ticks + unixTimeStampInTicks, System.DateTimeKind.Utc);
+        }
     }
 }
