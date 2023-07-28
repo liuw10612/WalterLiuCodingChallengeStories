@@ -65,7 +65,7 @@ export class NewStoriesDataComponent  {
         });
   }
     
-  // load one page
+  // load one page of stories
   public loadOnePage(currentPage: number) {
     this.searchText = "";   // reset filter string
     this.loading = true;
@@ -90,14 +90,16 @@ export class NewStoriesDataComponent  {
         finalize(() => this.loading = false)
       );
   }
+
+  // load a new page
   public onPageChange(event: Event) {
     const currentPage = event;
     if (+currentPage != this.page) {
-      //console.log(currentPage + "- real page =" + this.page);
       this.loadOnePage(+currentPage);
     }
   }
 
+  // page size changed, load the 1st page for the new page size
   public onPageSizeChange(pageSize: number) {
     if (this.perPage != pageSize) {
       this.perPage = pageSize;
@@ -140,6 +142,7 @@ export class NewStoriesDataComponent  {
     }
   }
 
+  // display logs to show customer what is going on
   public logMessage(message: string) {
     this.logEntries.push({
       message: message,
