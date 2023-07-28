@@ -10,3 +10,7 @@ span button:hover {
   color:white;
   transition: 0.7s;
 }
+
+li.page-item.disabled {
+  display: none;
+}
