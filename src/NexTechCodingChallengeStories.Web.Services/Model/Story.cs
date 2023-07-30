@@ -51,6 +51,11 @@ namespace CodingChallengeStories.Web.Services.Model
         [JsonProperty("url")]
         public string Url { get; set; }
 
+        /// <summary>
+        /// Convert UNIX time to local time
+        /// </summary>
+        /// <param name="unixTime"></param>
+        /// <returns></returns>
         private DateTime UnixTimestampToDateTime(double unixTime)
         {
             DateTime unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);

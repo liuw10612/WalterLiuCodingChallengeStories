@@ -2,7 +2,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { NewStoriesDataComponent, StoryTile } from './new-stories.component';
+import { NewStoriesDataComponent, iStoryTile } from './new-stories.component';
 import { HttpDataService } from '../services/httpData.service';
 
 class MockHttpDataService implements Partial<HttpDataService> {
@@ -12,6 +12,8 @@ class MockHttpDataService implements Partial<HttpDataService> {
     title: 'Title1',
     url: '/data'
   }];
+  responseMockCacheInfo = { cachePages: 1, cachePageSize: 10, cacheExpireHours: 2 };
+
   getNewStoriesCount$() {
     return of(123);
   }
@@ -21,10 +23,13 @@ class MockHttpDataService implements Partial<HttpDataService> {
   fullSearch$(searchText: string) {
     return of(this.responseMockObservable);
   }
+  getCacheInfo() {
+    return of(this.responseMockCacheInfo);
+  }
 }
 
 describe('NewStoriesDataComponent', () => {
-  let responseStories: StoryTile[];
+  let responseStories: iStoryTile[];
 
   let component: NewStoriesDataComponent;
   let fixture: ComponentFixture<NewStoriesDataComponent>;

@@ -16,14 +16,16 @@ namespace CodingChallengeStories.Web.Services.DataProvider
         ILogger<StoryDataProvider> _logger;
         private IHttpService _httpService;
         private ICachedData _cachedDataService;
+        private CacheInfo _cacheInfo;
 
-        public StoryDataProvider() { }
+        public StoryDataProvider() { }  // UNIT TEST usage
 
-        public StoryDataProvider(ILogger<StoryDataProvider> logger, IHttpService httpService, ICachedData cachedDataService)
+        public StoryDataProvider(ILogger<StoryDataProvider> logger, IHttpService httpService, ICachedData cachedDataService, CacheInfo cacheInfo)
         {
             _logger = logger;
             _httpService = httpService;
             _cachedDataService = cachedDataService;
+            _cacheInfo = cacheInfo;
         }
 
         public async Task<Story> GetOneStoryByIdAsync(int id)
@@ -99,8 +101,8 @@ namespace CodingChallengeStories.Web.Services.DataProvider
                             }
                         }
                     }
-                    if (page == CachedDataService.CachePageNumber && pageSize == CachedDataService.CachePageSize) // save 1st page as cache
-                        _cachedDataService.SetCachedDataOnePage(stories);
+                    // try to save it for cache if correct page number and page size
+                        _cachedDataService.SetCachedDataOnePage(stories, page, pageSize);
 
                     return stories;
                 }
@@ -116,7 +118,7 @@ namespace CodingChallengeStories.Web.Services.DataProvider
                 throw;
             }
         }
-        public async Task<List<StoryTitle>?> GetStoriesFullSearchAsync(string searchText)
+        public async Task<List<StoryTitle>> GetStoriesFullSearchAsync(string searchText)
         {
             try
             {
@@ -166,11 +168,11 @@ namespace CodingChallengeStories.Web.Services.DataProvider
             {
                 string url = _baseUrl +  $"/v0/newstories.json?print=pretty";
 
-                var newStories = await _httpService.HttpGetGeneric<List<int>>(url);
-                if (newStories !=null && newStories.Count > 0)
+                var newStoryIds = await _httpService.HttpGetGeneric<List<int>>(url);
+                if (newStoryIds != null && newStoryIds.Count > 0)
                 {
-                    _cachedDataService.SetCachedDataAllIds(newStories); // save for cache
-                    return newStories.Count;
+                    _cachedDataService.SetCachedDataAllIds(newStoryIds); // save for cache
+                    return newStoryIds.Count;
                 }
                 return 0;
             }
@@ -184,6 +186,10 @@ namespace CodingChallengeStories.Web.Services.DataProvider
                 _logger.LogError(e, "No HTTP Error while GetStoriesCountAsync()");
                 throw;
             }
+        }
+        public CacheInfo GetCacheInfo()
+        {
+            return  _cacheInfo;
         }
     }
 }

@@ -13,31 +13,45 @@ namespace CodingChallengeStories.Web.Services.CacheService
     /// </summary>
     public class CachedDataService : ICachedData
     {
-        private List<StoryTitle> _cachedStoriesOnePage = new List<StoryTitle> { };
+        private List<StoryTitle>[] _cachedStoriesPages = new List<StoryTitle>[10];    // MAXIMUM 10 pages to cache
         private List<int> _cachedStoryAllIds = new List<int> { };
         private List<int> _badUrlIds = new List<int> { };
 
+        private int _numPagesToCache;
+        private int _pageSizeToCache;
+        private int _hoursExpireCache;
+
         private DateTime cacheTime = DateTime.Now.AddDays(-2); // initialize expire time from 2 days ago
-        public const int CachePageNumber = 1;
-        public const int CachePageSize = 10;
 
         public CachedDataService() // UNIT TEST usage
         {
+        }
+        public CachedDataService(int numPagesToCache, int pageSizeToCache, int hoursExpireCache) 
+        {
+            _numPagesToCache = numPagesToCache > 10 ? 10: numPagesToCache;   // MAXIMUM 10 pages to cache
+            _pageSizeToCache = pageSizeToCache;
+            _hoursExpireCache= hoursExpireCache;
+            // initialize cache pages to be empty
+            for (int i = 0; i < _numPagesToCache; i++)
+                _cachedStoriesPages[i] = new List<StoryTitle> { };
         }
         /// <summary>
         /// Save cache for 1 page  
         /// </summary>
         /// <param name="cachedStories"></param>
-        public void SetCachedDataOnePage(List<StoryTitle> cachedStories)
+        public void SetCachedDataOnePage(List<StoryTitle> cachedStories, int pageNumber, int pageSize)
         {
+            if (_pageSizeToCache != pageSize || pageNumber > _numPagesToCache)
+                return;
+
             TimeSpan timeLapsed = DateTime.Now.Subtract(cacheTime);
-            if (_cachedStoriesOnePage == null 
-                || _cachedStoriesOnePage.Count==0
-                || timeLapsed.TotalHours > 1)
+            if (_cachedStoriesPages[pageNumber-1] == null 
+                || _cachedStoriesPages[pageNumber-1].Count==0
+                || timeLapsed.TotalHours > _hoursExpireCache)
             {
                 cacheTime = DateTime.Now;
-                _cachedStoriesOnePage?.Clear();
-                _cachedStoriesOnePage?.AddRange(cachedStories);
+                _cachedStoriesPages[pageNumber - 1].Clear();
+                _cachedStoriesPages[pageNumber - 1].AddRange(cachedStories);
             }
         }
         /// <summary>
@@ -49,11 +63,11 @@ namespace CodingChallengeStories.Web.Services.CacheService
         public List<StoryTitle>? GetCachedStoresOnePage(int pageNumber, int pageSize)
         {
             TimeSpan timeLapsed = DateTime.Now.Subtract(cacheTime); 
-            if (CachePageNumber == pageNumber 
-                && CachePageSize == pageSize 
-                && timeLapsed.TotalHours < 1 
-                && _cachedStoriesOnePage != null)
-                return _cachedStoriesOnePage;
+            if (_pageSizeToCache == pageSize 
+                && _numPagesToCache >= pageNumber 
+                && timeLapsed.TotalHours < _hoursExpireCache
+                && _cachedStoriesPages[pageNumber - 1] != null)
+                return _cachedStoriesPages[pageNumber - 1];
             else
                 return null;
         }

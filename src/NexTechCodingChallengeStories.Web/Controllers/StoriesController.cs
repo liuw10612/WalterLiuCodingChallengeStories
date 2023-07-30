@@ -90,5 +90,10 @@ namespace CodingChallengeStories.Web.Controllers
                 return new ObjectResult($"Error, http error : {e.Message}") { StatusCode = 500 };
             }
         }
+        [HttpGet("cacheInfo")]
+        public  ActionResult  GetCacheInfo()
+        {
+            return Ok(_storyDataProvider.GetCacheInfo());
+        }
     }
 }

@@ -15,11 +15,11 @@ namespace CodingChallengeStories.Web.Services.Test.Services
         [Fact]
         public void Get_On_Success_GetCachedStoresOnePage() {
             // Arrange
-            var sut = new CachedDataService();
+            var sut = new CachedDataService(3, 10, 2);  // cache for top 3 pages for page size=10, cache expire after 2 hours
 
             // Act
             var testData = StoriesFixture.GetTestStories();
-            sut.SetCachedDataOnePage(testData);
+            sut.SetCachedDataOnePage(testData, 1, 10);
             var expectedResult = sut.GetCachedStoresOnePage(1, 10);
 
             // Assert
@@ -34,13 +34,13 @@ namespace CodingChallengeStories.Web.Services.Test.Services
 
             // Act
             var testData = StoriesFixture.GetTestStories();
-            sut.SetCachedDataOnePage(testData);
+            sut.SetCachedDataOnePage(testData, 1, 10);
             var result1 = sut.GetCachedStoresOnePage(2, 10);        // wrong page number
             var result2 = sut.GetCachedStoresOnePage(1, 20);        // wrong page size
 
             // Assert
-            Assert.Equal(null, result1);
-            Assert.Equal(null, result2);
+            Assert.Null(result1);
+            Assert.Null(result2);
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace CodingChallengeStories.Web.Services.Test.Services
             var result = sut.GetCachedStoresAllIds();
 
             // Assert
-            Assert.Equal(0, result.Count);
+            Assert.Empty(result);
         }
     }
 }

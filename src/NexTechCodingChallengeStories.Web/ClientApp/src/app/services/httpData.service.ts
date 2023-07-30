@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { StoryTile } from '../new-stories/new-stories.component';
+import { iStoryTile, iCacheInfo } from '../new-stories/new-stories.component';
 
 /**
  * A DI HTTP Serivce for UNIT TEST purpose
@@ -14,6 +14,11 @@ import { StoryTile } from '../new-stories/new-stories.component';
 export class HttpDataService {
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
   }
+  // get cache info to display
+  getCacheInfo() {
+    let url = this.baseUrl + `codechallenge/cacheInfo`;
+    return this.http.get<iCacheInfo>(url, {});
+  }
 
   // get total stories count
   getNewStoriesCount$() {
@@ -23,12 +28,12 @@ export class HttpDataService {
   // load one page of stories
   loadOnePage$(currentPage: number, pageSize: number) {
     let url = `${this.baseUrl}codechallenge/onePage?p=${currentPage}&ps=${pageSize}`;
-    return this.http.get<StoryTile[]>(url, {});
+    return this.http.get<iStoryTile[]>(url, {});
   }
 
   // search all available stories by searchText
   fullSearch$(searchText: string) {
     let url = `${this.baseUrl}codechallenge/onePageFullSearch?s=${searchText}`;
-    return this.http.get<StoryTile[]>(url, {});
+    return this.http.get<iStoryTile[]>(url, {});
   }
 }

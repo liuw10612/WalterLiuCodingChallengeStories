@@ -25,7 +25,8 @@ namespace CodingChallengeStories.Web.Services.Test.Controller
             var mockLogger1 = new Mock<ILogger<StoryDataProvider>>();
             var mockCachedDataService = new Mock<ICachedData>();
             var mockDataService = new Mock<IHttpService> { DefaultValue = DefaultValue.Mock, };
-            var storyDataProvider = new StoryDataProvider(mockLogger1.Object, mockDataService.Object, mockCachedDataService.Object);
+            var cacheInfo = new CacheInfo(1, 10, 2);
+            var storyDataProvider = new StoryDataProvider(mockLogger1.Object, mockDataService.Object, mockCachedDataService.Object, cacheInfo);
 
             // Arrange
             var mockLogger = new Mock<ILogger<StoriesController>>();

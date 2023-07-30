@@ -1,4 +1,5 @@
 ﻿using CodingChallengeStories.Web.Services.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,9 @@ namespace CodingChallengeStories.Web.Services.CacheService
 {
     public interface ICachedData
     {
-        void SetCachedDataOnePage(List<StoryTitle> _cachedStories);
+        public void SetCachedDataAllIds(List<int> cachedStoriesAllIds);
         List<StoryTitle>? GetCachedStoresOnePage(int _pageNumber, int _pageSize);
-        void SetCachedDataAllIds(List<int> _cachedStoriesAllIds);
+        void SetCachedDataOnePage(List<StoryTitle> cachedStories, int pageNumber, int pageSize);
         List<int> GetCachedStoresAllIds();
         void RemoveOneStory(int storyId);
         public bool NotBadUrlId(int storyId);
