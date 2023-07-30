@@ -35,9 +35,9 @@ namespace CodingChallengeStories.Web.Services.Test.Services
             string url1 = "https://hacker-news.firebaseio.com/v0/newstories.json?print=pretty";
             var result1 = await sut.HttpGetGeneric<List<int>>(url1);
             // Act2 : retrieve one story 
-            string oneGoodStoryId = "36702537";
+            string oneGoodStoryId = "36924267";
             string url2 = $"https://hacker-news.firebaseio.com/v0/item/{oneGoodStoryId}.json?print=pretty";
-            var result2 = await sut.HttpGetGeneric<StoryTitle>(url2);
+            var result2 = await sut.HttpGetGeneric<Story>(url2);
 
             // Assert1 : stories count > 100
             bool expected = true;

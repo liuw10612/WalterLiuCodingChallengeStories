@@ -2,6 +2,14 @@
 using CodingChallengeStories.Web.Services.Model;
 using CodingChallengeStories.Web.Services.DataProvider;
 
+
+/**
+ * 
+ * The HTTP routes controller
+ * To receive HTTP requests from httpData.service.ts
+ * To call CodingChallengeStories.Web.Services to finish the job
+ * 
+ */
 namespace CodingChallengeStories.Web.Controllers
 {
     [ApiController]
@@ -16,7 +24,12 @@ namespace CodingChallengeStories.Web.Controllers
             _logger = logger;
             _storyDataProvider = storyDataProvider;
         }
-
+        /// <summary>
+        /// Asking to load one page of stories
+        /// </summary>
+        /// <param name="currentPage"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet("onePage")]
         public async Task<IActionResult> OnePage(
             [FromQuery(Name = "p")] int currentPage,
@@ -36,7 +49,11 @@ namespace CodingChallengeStories.Web.Controllers
                 return  NotFound();
             }
         }
-
+        /// <summary>
+        /// Asking to do a full search for all the stories
+        /// </summary>
+        /// <param name="searchText"></param>
+        /// <returns></returns>
         [HttpGet("onePageFullSearch")]
         public async Task<IActionResult> OnePageFullSearch([FromQuery(Name = "s")]  string searchText)
         {
@@ -55,6 +72,10 @@ namespace CodingChallengeStories.Web.Controllers
             }
 
         }
+        /// <summary>
+        /// Asked to get the total number of stories
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("storiesCount")]
         public async Task<IActionResult> GetStoriesCount()
         {
@@ -68,7 +89,11 @@ namespace CodingChallengeStories.Web.Controllers
                 _logger.LogError(e, "Error while OnePage");
                 return new ObjectResult($"Error, http error : {e.Message}") { StatusCode = 500 };
             }
-
+        }
+        [HttpGet("cacheInfo")]
+        public  ActionResult  GetCacheInfo()
+        {
+            return Ok(_storyDataProvider.GetCacheInfo());
         }
     }
 }

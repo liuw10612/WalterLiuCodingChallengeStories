@@ -22,10 +22,12 @@ export class NewStoriesDataComponent  {
   public displayLog: boolean = false;
   public loading: boolean = false;
   public searchText: string = '';
+  public cacheInfoText: string = '';
+  public cacheInfo!: iCacheInfo;
 
   stories$: Observable<any> | undefined;
   storyErrors$ = new BehaviorSubject<string>("");
-  logEntries: LogEntry[] = [];
+  logEntries: iLogEntry[] = [];
 
   // sort column
   public setSort(column: string) {
@@ -40,8 +42,28 @@ export class NewStoriesDataComponent  {
 
   constructor(private httpDataService: HttpDataService) { 
     this.getNewStoriesCount();
+    this.getCacheInfo();
   }
 
+  // get cache Info for tooltip display
+  public getCacheInfo() {
+    this.loading = true;
+    this.httpDataService.getCacheInfo()
+      .subscribe(
+        {
+          next: (result) => {
+            this.loading = false;
+            this.cacheInfo = result;
+            this.cacheInfoText = `Pages to cache 1-${this.cacheInfo.cachePages} for page size=${this.cacheInfo.cachePageSize}, cache expires after ${this.cacheInfo.cacheExpireHours} hours`;
+          },
+          error: (err: any) => {
+            this.logMessage(`no cache info data returned`);
+          },
+          complete: () => {
+            this.logMessage(`Get cache info completed successfully : ${this.cacheInfoText}`);
+          }
+        });
+  }
   // get total stories count
   public getNewStoriesCount() {
     this.loading = true;
@@ -65,7 +87,7 @@ export class NewStoriesDataComponent  {
         });
   }
     
-  // load one page
+  // load one page of stories
   public loadOnePage(currentPage: number) {
     this.searchText = "";   // reset filter string
     this.loading = true;
@@ -90,14 +112,16 @@ export class NewStoriesDataComponent  {
         finalize(() => this.loading = false)
       );
   }
+
+  // load a new page
   public onPageChange(event: Event) {
     const currentPage = event;
     if (+currentPage != this.page) {
-      //console.log(currentPage + "- real page =" + this.page);
       this.loadOnePage(+currentPage);
     }
   }
 
+  // page size changed, load the 1st page for the new page size
   public onPageSizeChange(pageSize: number) {
     if (this.perPage != pageSize) {
       this.perPage = pageSize;
@@ -140,6 +164,7 @@ export class NewStoriesDataComponent  {
     }
   }
 
+  // display logs to show customer what is going on
   public logMessage(message: string) {
     this.logEntries.push({
       message: message,
@@ -149,15 +174,20 @@ export class NewStoriesDataComponent  {
   }
 
  }
-export interface StoryTile {
+export interface iStoryTile {
   id: string;
   time: Date;
   title: string;
   url: string;
 }
 
-interface LogEntry {
+interface iLogEntry {
   message: string;
   time: Date;
   isError: Boolean;
+}
+export interface iCacheInfo {
+  cachePages: number;
+  cachePageSize: number;
+  cacheExpireHours: number;
 }

@@ -28,8 +28,8 @@ namespace CodingChallengeStories.Web.Services.Test.StoryContracts
             var mockCachedDataService = new Mock<ICachedData>();
 
             var mockDataService = new Mock<IHttpService> { DefaultValue = DefaultValue.Mock, };
-
-            var sut = new StoryDataProvider(mockLogger.Object, mockDataService.Object, mockCachedDataService.Object);
+            var cacheInfo = new CacheInfo(1, 10, 2);
+            var sut = new StoryDataProvider(mockLogger.Object, mockDataService.Object, mockCachedDataService.Object, cacheInfo  );
 
             // Act
             var result = await sut.GetStoriesCountAsync();
@@ -48,8 +48,8 @@ namespace CodingChallengeStories.Web.Services.Test.StoryContracts
             var mockLogger = new Mock<ILogger<StoryDataProvider>>();
             var mockCachedDataService = new Mock<ICachedData>();
             var mockDataService = new Mock<IHttpService> { DefaultValue = DefaultValue.Mock, };
-
-            var sut = new StoryDataProvider(mockLogger.Object, mockDataService.Object, mockCachedDataService.Object);
+            var cacheInfo = new CacheInfo(1, 10, 2);
+            var sut = new StoryDataProvider(mockLogger.Object, mockDataService.Object, mockCachedDataService.Object, cacheInfo);
             // Act
             var result =await sut.GetAllStoriesIdsAsync();
 

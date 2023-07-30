@@ -1,7 +1,7 @@
 <div class="row  ">
   <nav class="col-5 col-md-3 mt-2">
     <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-outline-primary  btn-xs mr-1" id="dropdownBasic1" [disabled]="loading" ngbTooltip="Page 1 cached" [disableTooltip]="perPage != 10" ngbDropdownToggle>Page Size</button>
+      <button class="btn btn-outline-primary  btn-xs mr-1" id="dropdownBasic1" [disabled]="loading"  ngbDropdownToggle>Page Size</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button name="page10" ngbDropdownItem (click)="onPageSizeChange(10)">10</button>
         <button name="page20" ngbDropdownItem (click)="onPageSizeChange(20)">20</button>
@@ -13,7 +13,7 @@
 
   <nav class="col-5 col-md-3 mt-2 pr-0 d-flex justify-content-end">
     <!--https://ng-bootstrap.github.io/#/components/pagination/examples-->
-    <ngb-pagination (pageChange)="onPageChange($any($event))" [disabled]="loading" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="true" [pageSize]="perPage" [ellipses]="true" [boundaryLinks]="true"  size="sm">
+    <ngb-pagination (pageChange)="onPageChange($any($event))" [disabled]="loading" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="true" [pageSize]="perPage" [ellipses]="true" [boundaryLinks]="true"  size="sm" ngbTooltip="{{cacheInfoText}}" [disableTooltip]="perPage != cacheInfo.cachePageSize">
     </ngb-pagination>
   </nav>
 

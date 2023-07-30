@@ -1,27 +1,29 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using CodingChallengeStories.Web.Services.CacheService;
 using CodingChallengeStories.Web.Services.HttpServices;
 using CodingChallengeStories.Web.Services.DataProvider;
-using System.Net.Mail;
+using CodingChallengeStories.Web.Services.Model;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddHttpClient();
 
 builder.Services.AddControllersWithViews();
 // DI supporting services
-builder.Services.AddSingleton(o=> new HttpService());
-builder.Services.AddSingleton(o => new CachedDataService());
-//builder.Services.AddSingleton(o => new StoryDataProvider(builder.GetRequiredService<ILogger<StoryDataProvider>>(), new DataService(), new CachedDataService()));
+builder.Services.AddSingleton(o => new HttpService());
+// cache config info
+int iCachePages = int.Parse(builder.Configuration.GetSection("AppConfig").GetSection("CachePages").Value);
+int iCachePageSize = int.Parse(builder.Configuration.GetSection("AppConfig").GetSection("CachePageSize").Value);
+int iCacheExpireHours = int.Parse(builder.Configuration.GetSection("AppConfig").GetSection("CacheExpireHours").Value);
+builder.Services.AddSingleton(o => new CachedDataService(iCachePages, iCachePageSize, iCacheExpireHours));
 builder.Services.AddSingleton<StoryDataProvider>(provider =>
 {
-    return new StoryDataProvider(provider.GetRequiredService<ILogger<StoryDataProvider>>(), new HttpService(), new CachedDataService());
+    return new StoryDataProvider(provider.GetRequiredService<ILogger<StoryDataProvider>>(), 
+        new HttpService(), 
+        new CachedDataService(iCachePages, iCachePageSize, iCacheExpireHours), 
+        new CacheInfo(iCachePages, iCachePageSize, iCacheExpireHours));
 });
 
 var app = builder.Build();
@@ -36,7 +38,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
 
 app.MapControllerRoute(
     name: "default",
